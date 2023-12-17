@@ -1,10 +1,11 @@
 using System;
 using Application.Character;
-using Core.Character;
-using Core.Character.CharacterStates;
-using Core.MessagePipe;
-using Core.MessagePipe.Messages;
-using Core.StateMachine;
+using Application.Utils;
+using Assets.Scripts.Core.Character;
+using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.MessagePipe;
+using Assets.Scripts.Core.MessagePipe.Messages;
+using Assets.Scripts.Core.StateMachine;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -15,7 +16,8 @@ using CharacterController = Application.Character.CharacterController;
 namespace IoC
 {
     /// <summary>
-    /// Configures the lifetime scope for VContainer in the game, providing a centralized place for dependency registration.
+    /// Configures the lifetime scope for VContainer in the game.
+    /// Provides a centralized place for dependency registration.
     /// </summary>
     public class GameLifetimeScope : LifetimeScope
     {
@@ -29,6 +31,16 @@ namespace IoC
         {
             RegisterMessagePipe(builder);
             RegisterCharacter(builder);
+            RegisterCoreAdapters(builder);
+        }
+
+        /// <summary>
+        /// Registers adapters for core utilities.
+        /// </summary>
+        /// <param name="builder">The container builder to register dependencies.</param>
+        private void RegisterCoreAdapters(IContainerBuilder builder)
+        {
+            builder.Register<Assets.Scripts.Core.Utils.Pool.IObjectPool<CharacterAnimationMessage>, ObjectPoolAdapter<CharacterAnimationMessage>>(Lifetime.Scoped);
         }
 
         /// <summary>
@@ -45,7 +57,7 @@ namespace IoC
 
             // Register MessageBroker for CharacterAnimationMessage messages.
             builder.RegisterMessageBroker<CharacterAnimationMessage>(options);
-            builder.Register<PoolableMessagePublisher<CharacterAnimationMessage>>(Lifetime.Singleton);
+            builder.Register<PoolableMessagePublisher<CharacterAnimationMessage, Type>>(Lifetime.Singleton);
         }
 
         /// <summary>
@@ -61,10 +73,13 @@ namespace IoC
 
             // Register the CharacterView component.
             builder.RegisterComponent(characterView).As<ICharacterView>();
+            
             // Register CharacterAnimationController as an entry point.
             builder.Register<CharacterAnimationController>(Lifetime.Singleton).AsSelf();
+            
             // Register CharacterStateRunner as a StateRunner<CharacterState>.
             builder.Register<CharacterStateRunner>(Lifetime.Scoped).As<StateRunner<CharacterState>>();
+            
             // Register CharacterController as a self-contained dependency.
             builder.RegisterEntryPoint<CharacterController>(Lifetime.Scoped).AsSelf();
         }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Core.StateMachine
+namespace Assets.Scripts.Core.StateMachine
 {
     public interface IStateRunner
     {

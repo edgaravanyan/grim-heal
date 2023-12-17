@@ -1,11 +1,9 @@
-using System;
-
-namespace Core.Utils.Pool
+namespace Assets.Scripts.Core.Utils.Pool
 {
     /// <summary>
-    /// Represents an interface for poolable objects that require initialization and disposal.
+    /// Represents an interface for poolable objects that require initialization.
     /// </summary>
-    public interface IPoolable<in T> : IDisposable
+    public interface IPoolable<in T>
     {
         /// <summary>
         /// Initializes the poolable object with the provided data.

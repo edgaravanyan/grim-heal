@@ -1,25 +1,29 @@
-using System;
+using Assets.Scripts.Core.Utils.Pool;
 using MessagePipe;
 using VContainer;
 
-namespace Core.MessagePipe
+namespace Assets.Scripts.Core.MessagePipe
 {
     /// <summary>
     /// Provides a wrapper around IPublisher for publishing poolable messages and ensuring proper disposal.
     /// </summary>
     /// <typeparam name="T">The type of the poolable message.</typeparam>
-    public class PoolableMessagePublisher<T> where T : IDisposable
+    /// <typeparam name="TU">The type of the data to initialize the poolable message.</typeparam>
+    public class PoolableMessagePublisher<T, TU> where T : class, IPoolable<TU>
     {
+        [Inject] private IObjectPool<T> messagePool;
         [Inject] private IPublisher<T> publisher;
 
         /// <summary>
         /// Publishes the poolable message and disposes of it.
         /// </summary>
-        /// <param name="message">The poolable message to publish.</param>
-        public void Publish(T message)
+        /// <param name="data">The data to initialize the poolable message.</param>
+        public void Publish(TU data)
         {
+            var message = messagePool.Get();
+            message.Initialize(data);
             publisher.Publish(message);
-            message.Dispose();
+            messagePool.Release(message);
         }
     }
 }

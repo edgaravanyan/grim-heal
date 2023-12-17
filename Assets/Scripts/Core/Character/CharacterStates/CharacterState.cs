@@ -1,9 +1,10 @@
-using Core.MessagePipe;
-using Core.MessagePipe.Messages;
-using Core.StateMachine;
+using System;
+using Assets.Scripts.Core.MessagePipe;
+using Assets.Scripts.Core.MessagePipe.Messages;
+using Assets.Scripts.Core.StateMachine;
 using VContainer;
 
-namespace Core.Character.CharacterStates
+namespace Assets.Scripts.Core.Character.CharacterStates
 {
     /// <summary>
     /// An abstract adapter of IState inherited by specific states of the character.
@@ -14,7 +15,7 @@ namespace Core.Character.CharacterStates
     public abstract class CharacterState : IState
     {
         [Inject] protected Character character;
-        [Inject] protected PoolableMessagePublisher<CharacterAnimationMessage> animationPublisher;
+        [Inject] protected PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher;
 
         /// <summary>
         /// Called when entering the state.

@@ -1,5 +1,5 @@
-using Core.Character.CharacterStates;
-using Core.StateMachine;
+using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.StateMachine;
 using VContainer;
 using VContainer.Unity;
 

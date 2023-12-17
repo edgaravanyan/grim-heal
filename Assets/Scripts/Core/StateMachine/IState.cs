@@ -1,4 +1,4 @@
-namespace Core.StateMachine
+namespace Assets.Scripts.Core.StateMachine
 {
     /// <summary>
     /// Represents the contract for any state in the state machine.

@@ -1,4 +1,4 @@
-namespace Core.Character
+namespace Assets.Scripts.Core.Character
 {
     /// <summary>
     /// A model class representing a game character.

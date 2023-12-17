@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Core.MessagePipe.Messages;
+using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.MessagePipe.Messages;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -13,13 +14,14 @@ namespace Application.Character
     /// </summary>
     public class CharacterAnimationController : IInitializable, IDisposable
     {
-        public static readonly int IdleTriggerHash = Animator.StringToHash("Idle");
-        public static readonly int DieTriggerHash = Animator.StringToHash("Die");
+        private static readonly int IdleTriggerHash = Animator.StringToHash("Idle");
+        private static readonly int WalkTriggerHash = Animator.StringToHash("Walk");
+        private static readonly int DieTriggerHash = Animator.StringToHash("Die");
 
         [Inject] private ICharacterView characterView;
         [Inject] private ISubscriber<CharacterAnimationMessage> messageSubscriber;
 
-        private readonly Dictionary<int, Action> messageHandlers = new Dictionary<int, Action>();
+        private readonly Dictionary<Type, Action> messageHandlers = new ();
         private IDisposable messageBag;
 
         /// <summary>
@@ -40,6 +42,14 @@ namespace Application.Character
         }
 
         /// <summary>
+        /// Plays the walk animation.
+        /// </summary>
+        public void PlayWalkAnimation()
+        {
+            characterView.PlayAnimation(WalkTriggerHash);
+        }
+
+        /// <summary>
         /// Plays the die animation.
         /// </summary>
         public void PlayDieAnimation()
@@ -54,7 +64,7 @@ namespace Application.Character
             // Subscribe to animation messages.
             messageSubscriber.Subscribe(message =>
             {
-                if (messageHandlers.TryGetValue(message.AnimationHash, out var handler))
+                if (messageHandlers.TryGetValue(message.data, out var handler))
                 {
                     handler.Invoke();
                 }
@@ -65,8 +75,9 @@ namespace Application.Character
 
         private void RegisterMessageHandlers()
         {
-            messageHandlers.Add(IdleTriggerHash, PlayIdleAnimation);
-            messageHandlers.Add(DieTriggerHash, PlayDieAnimation);
+            messageHandlers.Add(typeof(IdleState), PlayIdleAnimation);
+            messageHandlers.Add(typeof(WalkState), PlayWalkAnimation);
+            messageHandlers.Add(typeof(DieState), PlayDieAnimation);
             // Add more message handlers as needed.
         }
 

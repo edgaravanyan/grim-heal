@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Core.Character.CharacterStates;
-using Core.StateMachine;
+using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.StateMachine;
 
 namespace Application.Character
 {

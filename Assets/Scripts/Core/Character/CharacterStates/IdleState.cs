@@ -1,7 +1,4 @@
-using Application.Character;
-using Core.MessagePipe.Messages;
-
-namespace Core.Character.CharacterStates
+namespace Assets.Scripts.Core.Character.CharacterStates
 {
     /// <summary>
     /// Represents the idle state of the character.
@@ -14,8 +11,9 @@ namespace Core.Character.CharacterStates
         public override void Enter()
         {
             base.Enter();
+            
             // Publish a message to play the idle animation.
-            animationPublisher.Publish(CharacterAnimationMessage.Get(CharacterAnimationController.IdleTriggerHash));
+            animationPublisher.Publish(this.GetType());
         }
     }
 }
