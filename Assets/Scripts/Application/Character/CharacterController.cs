@@ -1,5 +1,6 @@
 using Assets.Scripts.Core.Character.CharacterStates;
 using Assets.Scripts.Core.StateMachine;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -10,12 +11,10 @@ namespace Application.Character
     /// </summary>
     public class CharacterController : IStartable
     {
-        [Inject] private CharacterAnimationController characterAnimationController;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
 
         void IStartable.Start()
         {
-            characterAnimationController.Initialize();
             characterStateRunner.SetState(typeof(IdleState));
         }
 

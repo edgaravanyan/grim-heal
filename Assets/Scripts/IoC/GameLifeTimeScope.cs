@@ -75,7 +75,7 @@ namespace IoC
             builder.RegisterComponent(characterView).As<ICharacterView>();
             
             // Register CharacterAnimationController as an entry point.
-            builder.Register<CharacterAnimationController>(Lifetime.Singleton).AsSelf();
+            builder.Register<CharacterAnimationController>(Lifetime.Singleton).AsImplementedInterfaces();
             
             // Register CharacterStateRunner as a StateRunner<CharacterState>.
             builder.Register<CharacterStateRunner>(Lifetime.Scoped).As<StateRunner<CharacterState>>();

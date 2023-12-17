@@ -5,7 +5,7 @@ using CharacterController = Application.Character.CharacterController;
 namespace Application.Managers
 {
     /// <summary>
-    /// Manages the overall game flow and dependencies.
+    /// Manages the overall game flow.
     /// </summary>
     public class GameManager : MonoBehaviour
     {

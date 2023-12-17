@@ -27,7 +27,7 @@ namespace Application.Character
         /// <summary>
         /// Initializes the CharacterAnimationController.
         /// </summary>
-        public void Initialize()
+        void IInitializable.Initialize()
         {
             RegisterMessageHandlers();
             RegisterSubscribers();
