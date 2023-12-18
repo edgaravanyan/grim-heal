@@ -46,5 +46,10 @@ namespace Application.Utils
         {
             this.position = new Vector2(position.X, position.Y);
         }
+
+        public override string ToString()
+        {
+            return this.position.ToString();
+        }
     }
 }

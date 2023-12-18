@@ -3,7 +3,6 @@ using System.Numerics;
 using Assets.Scripts.Core.MessagePipe;
 using Assets.Scripts.Core.MessagePipe.Messages;
 using Assets.Scripts.Core.StateMachine;
-using VContainer;
 
 namespace Assets.Scripts.Core.Character.CharacterStates
 {
@@ -15,14 +14,20 @@ namespace Assets.Scripts.Core.Character.CharacterStates
     /// </remarks>
     public abstract class CharacterState : IState
     {
-        /// <summary>
-        /// Gets or sets the input vector representing user input for the state.
-        /// </summary>
+        private PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher;
+        
         protected Vector2 Input;
+        protected Character character;
+        protected PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher;
 
-        [Inject] protected Character character;
-        [Inject] protected PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher;
-        [Inject] protected PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher;
+        public CharacterState(Character character,
+            PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher,
+            PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher)
+        {
+            this.character = character;
+            this.animationPublisher = animationPublisher;
+            this.setStatePublisher = setStatePublisher;
+        }
 
         /// <summary>
         /// Called when entering the state. Publishes an animation message for the current state type.

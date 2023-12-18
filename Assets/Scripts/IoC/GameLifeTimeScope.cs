@@ -7,6 +7,7 @@ using Assets.Scripts.Core.Character;
 using Assets.Scripts.Core.Character.CharacterStates;
 using Assets.Scripts.Core.Contracts;
 using Assets.Scripts.Core.Contracts.Pool;
+using Assets.Scripts.Core.Logger;
 using Assets.Scripts.Core.MessagePipe;
 using Assets.Scripts.Core.MessagePipe.Messages;
 using Assets.Scripts.Core.StateMachine;
@@ -16,7 +17,6 @@ using VContainer;
 using VContainer.Unity;
 using View.Character;
 using CharacterController = Application.Character.CharacterController;
-using ILogger = Assets.Scripts.Core.Contracts.ILogger;
 using Logger = Application.Utils.Logger;
 
 namespace IoC
@@ -61,7 +61,8 @@ namespace IoC
             builder.Register<IObjectPool<SetCharacterStateMessage>, ObjectPoolAdapter<SetCharacterStateMessage>>(Lifetime.Singleton);
             
             builder.Register<IPosition, Position>(Lifetime.Transient);
-            builder.Register<ILogger, Logger>(Lifetime.Singleton);
+            
+            LoggerProvider.Initialize(new Logger());
         }
 
         /// <summary>
@@ -93,7 +94,6 @@ namespace IoC
         private void RegisterCharacter(IContainerBuilder builder)
         {
             builder.Register<Character>(Lifetime.Scoped).AsSelf();
-            
             builder.Register<CharacterMovement>(Lifetime.Scoped).AsSelf();
             
             builder.Register<CharacterState, IdleState>(Lifetime.Scoped);

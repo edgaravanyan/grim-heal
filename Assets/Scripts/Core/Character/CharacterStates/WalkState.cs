@@ -1,7 +1,8 @@
+using System;
 using Assets.Scripts.Core.Contracts;
+using Assets.Scripts.Core.Logger;
 using Assets.Scripts.Core.MessagePipe;
 using Assets.Scripts.Core.MessagePipe.Messages;
-using VContainer;
 
 namespace Assets.Scripts.Core.Character.CharacterStates
 {
@@ -10,9 +11,23 @@ namespace Assets.Scripts.Core.Character.CharacterStates
     /// </summary>
     public class WalkState : CharacterState
     {
-        [Inject] protected CharacterMovement characterMovement;
-        [Inject] protected PoolableMessagePublisher<PositionUpdateMessage, IPosition> positionPublisher;
+        protected CharacterMovement characterMovement;
+        protected PoolableMessagePublisher<PositionUpdateMessage, IPosition> positionPublisher;
 
+        public WalkState(Character character,
+            CharacterMovement characterMovement,
+            PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher,
+            PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher,
+            PoolableMessagePublisher<PositionUpdateMessage, IPosition> positionPublisher)
+        :base(
+            character,
+            animationPublisher,
+            setStatePublisher)
+        {
+            this.characterMovement = characterMovement;
+            this.positionPublisher = positionPublisher;
+        }
+        
         /// <summary>
         /// Updates the logical aspects of the walking state, including calculating character speed.
         /// </summary>

@@ -1,7 +1,5 @@
-using Assets.Scripts.Core.Character;
 using Assets.Scripts.Core.Contracts;
 using Assets.Scripts.Core.Contracts.Pool;
-using VContainer;
 
 namespace Assets.Scripts.Core.MessagePipe
 {
@@ -12,8 +10,14 @@ namespace Assets.Scripts.Core.MessagePipe
     /// <typeparam name="TU">The type of the data to initialize the poolable message.</typeparam>
     public class PoolableMessagePublisher<T, TU> where T : class, IPoolable<TU>
     {
-        [Inject] private IObjectPool<T> messagePool;
-        [Inject] private IMessagePublisher<T> publisher;
+        private IObjectPool<T> messagePool;
+        private IMessagePublisher<T> publisher;
+
+        public PoolableMessagePublisher(IObjectPool<T> messagePool, IMessagePublisher<T> publisher)
+        {
+            this.messagePool = messagePool;
+            this.publisher = publisher;
+        }
 
         /// <summary>
         /// Publishes the poolable message and disposes of it.

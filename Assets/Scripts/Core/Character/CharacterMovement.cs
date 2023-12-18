@@ -1,6 +1,6 @@
 using System;
 using System.Numerics;
-using VContainer;
+using Assets.Scripts.Core.Logger;
 
 namespace Assets.Scripts.Core.Character
 {
@@ -9,12 +9,20 @@ namespace Assets.Scripts.Core.Character
     /// </summary>
     public class CharacterMovement
     {
-        [Inject] private Character character;
+        private readonly Character character;
 
+        private readonly float acceleration = 10;
+        private readonly float deAcceleration;
+        private readonly float moveSpeed = 3;
         private float currentSpeed = 0;
-        private float acceleration = 2;
-        private float deAcceleration = 1;
-        private float speed = 2;
+
+        public CharacterMovement(Character character)
+        {
+            this.character = character;
+            // acceleration = character.CharacterStats.Acceleration;
+            // deAcceleration = character.CharacterStats.DeAcceleration;
+            // moveSpeed = character.CharacterStats.MoveSpeed;
+        }
 
         /// <summary>
         /// Moves the character based on the current movement parameters.
@@ -39,15 +47,15 @@ namespace Assets.Scripts.Core.Character
             // Adjust the character's speed based on acceleration and deceleration.
             if (moveDirection.LengthSquared() > 0 && currentSpeed >= 0)
             {
-                currentSpeed += acceleration * speed * deltaTime;
+                currentSpeed += acceleration * moveSpeed * deltaTime;
             }
             else
             {
-                currentSpeed -= deAcceleration * speed * deltaTime;
+                currentSpeed -= deAcceleration * moveSpeed * deltaTime;
             }
 
             // Clamp the speed to ensure it stays within the specified range.
-            currentSpeed = Math.Clamp(currentSpeed, 0, speed);
+            currentSpeed = Math.Clamp(currentSpeed, 0, moveSpeed);
         }
     }
 }
