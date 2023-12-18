@@ -5,7 +5,7 @@ namespace Assets.Scripts.Core.MessagePipe.Messages
     /// <summary>
     /// A base class for implementing poolable messages.
     /// </summary>
-    /// <typeparam name="T">The concrete message type.</typeparam>
+    /// <typeparam name="T">The type of message data.</typeparam>
     public abstract class Message<T> : IPoolable<T>
     {
         public T data { get; private set; }

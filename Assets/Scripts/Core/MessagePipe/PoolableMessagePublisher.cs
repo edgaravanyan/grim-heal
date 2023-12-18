@@ -1,5 +1,6 @@
+using Assets.Scripts.Core.Character;
+using Assets.Scripts.Core.Contracts;
 using Assets.Scripts.Core.Contracts.Pool;
-using MessagePipe;
 using VContainer;
 
 namespace Assets.Scripts.Core.MessagePipe
@@ -12,7 +13,7 @@ namespace Assets.Scripts.Core.MessagePipe
     public class PoolableMessagePublisher<T, TU> where T : class, IPoolable<TU>
     {
         [Inject] private IObjectPool<T> messagePool;
-        [Inject] private IPublisher<T> publisher;
+        [Inject] private IMessagePublisher<T> publisher;
 
         /// <summary>
         /// Publishes the poolable message and disposes of it.
