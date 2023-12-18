@@ -1,4 +1,4 @@
-using UnityEngine;
+using Assets.Scripts.Core.Contracts;
 
 namespace Application.Character
 {
@@ -17,6 +17,6 @@ namespace Application.Character
         /// Sets the position of the character view.
         /// </summary>
         /// <param name="position">The new position.</param>
-        void SetPosition(Vector2 position);
+        void SetPosition(IPosition position);
     }
 }

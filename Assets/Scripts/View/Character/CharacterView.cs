@@ -1,4 +1,5 @@
 using Application.Character;
+using Assets.Scripts.Core.Contracts;
 using UnityEngine;
 
 namespace View.Character
@@ -33,10 +34,10 @@ namespace View.Character
         /// Sets the position of the character view in the game world.
         /// </summary>
         /// <param name="position">The new position for the character.</param>
-        public void SetPosition(Vector2 position)
+        public void SetPosition(IPosition position)
         {
             // Set the GameObject's position based on the provided coordinates.
-            transform.position = position;
+            transform.position = new Vector2(position.X, position.Y);
         }
     }
 }

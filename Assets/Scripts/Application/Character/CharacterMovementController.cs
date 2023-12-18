@@ -28,7 +28,7 @@ namespace Application.Character
         {
             input.Game.Movement.performed += CaptureInput;
             input.Game.Movement.canceled += CaptureInput;
-            messageSubscriber.Subscribe(message => characterView.SetPosition(new Vector2(message.data.X, message.data.Y)));
+            messageSubscriber.Subscribe(message => characterView.SetPosition(message.data));
         }
 
         /// <summary>
