@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Application.Character
 {
     /// <summary>
@@ -10,5 +12,11 @@ namespace Application.Character
         /// </summary>
         /// <param name="trigger">The trigger for the animation.</param>
         void PlayAnimation(int trigger);
+
+        /// <summary>
+        /// Sets the position of the character view.
+        /// </summary>
+        /// <param name="position">The new position.</param>
+        void SetPosition(Vector2 position);
     }
 }

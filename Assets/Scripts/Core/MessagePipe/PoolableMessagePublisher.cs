@@ -1,4 +1,4 @@
-using Assets.Scripts.Core.Utils.Pool;
+using Assets.Scripts.Core.Contracts.Pool;
 using MessagePipe;
 using VContainer;
 

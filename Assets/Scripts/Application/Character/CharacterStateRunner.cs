@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Numerics;
 using Assets.Scripts.Core.Character.CharacterStates;
 using Assets.Scripts.Core.StateMachine;
 
@@ -22,6 +21,7 @@ namespace Application.Character
         /// <param name="deltaTime">The time elapsed since the last frame.</param>
         public override void UpdateCurrentState(float deltaTime)
         {
+            base.UpdateCurrentState(deltaTime);
             // Update the logical aspects of the current state.
             currentState.UpdateLogic(deltaTime);
         }
@@ -34,16 +34,6 @@ namespace Application.Character
         {
             // Update the physics-related aspects of the current state.
             currentState.UpdatePhysics(fixedDeltaTime);
-        }
-
-        /// <summary>
-        /// Handles input for the current state.
-        /// </summary>
-        /// <param name="input">The input vector representing user input.</param>
-        public override void HandleInput(Vector2 input)
-        {
-            // Pass the input to the current state for handling.
-            currentState.HandleInput(input);
         }
     }
 }

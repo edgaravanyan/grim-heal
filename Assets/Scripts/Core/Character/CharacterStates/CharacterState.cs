@@ -20,7 +20,9 @@ namespace Assets.Scripts.Core.Character.CharacterStates
         /// </summary>
         protected Vector2 Input;
 
+        [Inject] protected Character character;
         [Inject] protected PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher;
+        [Inject] protected PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher;
 
         /// <summary>
         /// Called when entering the state. Publishes an animation message for the current state type.
@@ -50,6 +52,11 @@ namespace Assets.Scripts.Core.Character.CharacterStates
         {
             Input = input;
         }
+
+        /// <summary>
+        /// Checks conditions to determine whether to change to a different state.
+        /// </summary>
+        public virtual void CheckToChange() { }
 
         /// <summary>
         /// Called when exiting the state.

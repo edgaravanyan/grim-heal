@@ -48,9 +48,24 @@ namespace Assets.Scripts.Core.StateMachine
         /// <param name="stateType">The type of the state to set.</param>
         public void SetState(Type stateType)
         {
-            currentState?.Exit();
-            currentState = GetState(stateType);
-            currentState.Enter();
+            if (currentState == null || currentState.GetType() != stateType)
+            {
+                currentState?.Exit();
+                currentState = GetState(stateType);
+                currentState.Enter();
+            }
+        }
+
+        /// <summary>
+        /// Handles input for the current state.
+        /// </summary>
+        /// <param name="input">The input vector representing user input.</param>
+        public void HandleInput(Vector2 input)
+        {
+            foreach (var state in states)
+            {
+                state.HandleInput(input);
+            }
         }
 
         /// <summary>
@@ -58,7 +73,10 @@ namespace Assets.Scripts.Core.StateMachine
         /// Concrete implementations should provide the specific update logic.
         /// </summary>
         /// <param name="deltaTime">The time elapsed since the last frame.</param>
-        public abstract void UpdateCurrentState(float deltaTime);
+        public virtual void UpdateCurrentState(float deltaTime)
+        {
+            currentState?.CheckToChange();
+        }
 
         /// <summary>
         /// Handles physics-related updates for the current state.
@@ -66,12 +84,5 @@ namespace Assets.Scripts.Core.StateMachine
         /// </summary>
         /// <param name="fixedDeltaTime">The fixed time step between frames.</param>
         public abstract void FixedUpdate(float fixedDeltaTime);
-
-        /// <summary>
-        /// Handles input for the current state.
-        /// Concrete implementations should provide the specific input handling logic.
-        /// </summary>
-        /// <param name="input">The input vector representing user input.</param>
-        public abstract void HandleInput(Vector2 input);
     }
 }

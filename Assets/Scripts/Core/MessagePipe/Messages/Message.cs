@@ -1,4 +1,4 @@
-using Assets.Scripts.Core.Utils.Pool;
+using Assets.Scripts.Core.Contracts.Pool;
 
 namespace Assets.Scripts.Core.MessagePipe.Messages
 {

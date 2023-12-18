@@ -1,4 +1,4 @@
-namespace Assets.Scripts.Core.Utils.Pool
+namespace Assets.Scripts.Core.Contracts.Pool
 {
     /// <summary>
     /// Represents an interface for poolable objects that require initialization.

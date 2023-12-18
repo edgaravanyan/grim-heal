@@ -1,5 +1,7 @@
 using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.MessagePipe.Messages;
 using Assets.Scripts.Core.StateMachine;
+using MessagePipe;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -12,6 +14,7 @@ namespace Application.Character
     public class CharacterController : IStartable
     {
         [Inject] private StateRunner<CharacterState> characterStateRunner;
+        [Inject] private ISubscriber<SetCharacterStateMessage> stateChangeSubscriber;
 
         /// <summary>
         /// Initializes the character controller by setting the initial state to IdleState.
@@ -19,6 +22,10 @@ namespace Application.Character
         void IStartable.Start()
         {
             characterStateRunner.SetState(typeof(IdleState));
+            stateChangeSubscriber.Subscribe(message =>
+            {
+                characterStateRunner.SetState(message.data);
+            });
         }
 
         /// <summary>

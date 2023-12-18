@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using VContainer;
 using CharacterController = Application.Character.CharacterController;

@@ -31,6 +31,11 @@ namespace Assets.Scripts.Core.StateMachine
         void HandleInput(Vector2 input);
 
         /// <summary>
+        /// Checks conditions to determine whether to change to a different state.
+        /// </summary>
+        void CheckToChange();
+
+        /// <summary>
         /// Called when exiting the state. Implement this method to clean up resources or perform exit actions.
         /// </summary>
         void Exit();

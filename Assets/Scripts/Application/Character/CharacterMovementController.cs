@@ -1,7 +1,9 @@
 using System;
 using Application.Input;
 using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.MessagePipe.Messages;
 using Assets.Scripts.Core.StateMachine;
+using MessagePipe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -16,6 +18,8 @@ namespace Application.Character
     {
         [Inject] private InputActions input;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
+        [Inject] private ICharacterView characterView;
+        [Inject] private ISubscriber<PositionUpdateMessage> messageSubscriber;
 
         /// <summary>
         /// Initializes the character movement controller by subscribing to movement input events.
@@ -23,6 +27,8 @@ namespace Application.Character
         void IInitializable.Initialize()
         {
             input.Game.Movement.performed += CaptureInput;
+            input.Game.Movement.canceled += CaptureInput;
+            messageSubscriber.Subscribe(message => characterView.SetPosition(new Vector2(message.data.X, message.data.Y)));
         }
 
         /// <summary>
@@ -33,7 +39,8 @@ namespace Application.Character
         {
             // Read the movement input vector from the input context and pass it to the character state runner.
             var movementInput = context.ReadValue<Vector2>();
-            characterStateRunner.HandleInput(new System.Numerics.Vector2(movementInput.x, movementInput.y));
+            var vector2 = new System.Numerics.Vector2(movementInput.x, movementInput.y);
+            characterStateRunner.HandleInput(vector2);
         }
 
         /// <summary>
@@ -42,6 +49,7 @@ namespace Application.Character
         void IDisposable.Dispose()
         {
             input.Game.Movement.performed -= CaptureInput;
+            input.Game.Movement.canceled -= CaptureInput;
         }
     }
 }

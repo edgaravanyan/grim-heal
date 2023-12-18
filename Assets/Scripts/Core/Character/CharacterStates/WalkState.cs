@@ -1,3 +1,6 @@
+using Assets.Scripts.Core.Contracts;
+using Assets.Scripts.Core.MessagePipe;
+using Assets.Scripts.Core.MessagePipe.Messages;
 using VContainer;
 
 namespace Assets.Scripts.Core.Character.CharacterStates
@@ -8,6 +11,7 @@ namespace Assets.Scripts.Core.Character.CharacterStates
     public class WalkState : CharacterState
     {
         [Inject] protected CharacterMovement characterMovement;
+        [Inject] protected PoolableMessagePublisher<PositionUpdateMessage, IPosition> positionPublisher;
 
         /// <summary>
         /// Updates the logical aspects of the walking state, including calculating character speed.
@@ -16,9 +20,7 @@ namespace Assets.Scripts.Core.Character.CharacterStates
         public override void UpdateLogic(float deltaTime)
         {
             base.UpdateLogic(deltaTime);
-
-            // Calculate character speed based on the current walking state.
-            characterMovement.CalculateSpeed(deltaTime);
+            characterMovement.CalculateSpeed(deltaTime, Input);
         }
 
         /// <summary>
@@ -28,9 +30,22 @@ namespace Assets.Scripts.Core.Character.CharacterStates
         public override void UpdatePhysics(float fixedDeltaTime)
         {
             base.UpdatePhysics(fixedDeltaTime);
+            characterMovement.Move(fixedDeltaTime, Input);
+            positionPublisher.Publish(character.Position);
+        }
 
-            // Move the character based on the physics of the walking state.
-            characterMovement.Move(fixedDeltaTime);
+        /// <summary>
+        /// Checks for a change to the IdleState based on movement input.
+        /// </summary>
+        public override void CheckToChange()
+        {
+            base.CheckToChange();
+
+            // Check if there is no movement input, and transition to the IdleState if true.
+            if (Input.LengthSquared() == 0)
+            {
+                setStatePublisher.Publish(typeof(IdleState));
+            }
         }
     }
 }
