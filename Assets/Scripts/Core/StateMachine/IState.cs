@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace Assets.Scripts.Core.StateMachine
 {
     /// <summary>
@@ -6,27 +8,30 @@ namespace Assets.Scripts.Core.StateMachine
     public interface IState
     {
         /// <summary>
-        /// Called when entering the state.
+        /// Called when entering the state. Implement this method to initialize any necessary resources or perform setup actions.
         /// </summary>
         void Enter();
 
         /// <summary>
-        /// Called to update the logical aspects of the state.
+        /// Called to update the logical aspects of the state. Implement this method to handle game logic updates.
         /// </summary>
-        void UpdateLogic();
+        /// <param name="deltaTime">The time elapsed since the last frame.</param>
+        void UpdateLogic(float deltaTime);
 
         /// <summary>
-        /// Called to update the physics-related aspects of the state.
+        /// Called to update the physics-related aspects of the state. Implement this method to handle physics-related updates.
         /// </summary>
-        void UpdatePhysics();
+        /// <param name="fixedDeltaTime">The fixed time step for physics calculations.</param>
+        void UpdatePhysics(float fixedDeltaTime);
 
         /// <summary>
-        /// Handles input for the state.
+        /// Handles input for the state. Implement this method to process user input specific to the state.
         /// </summary>
-        void HandleInput();
+        /// <param name="input">The input vector representing user input for movement.</param>
+        void HandleInput(Vector2 input);
 
         /// <summary>
-        /// Called when exiting the state.
+        /// Called when exiting the state. Implement this method to clean up resources or perform exit actions.
         /// </summary>
         void Exit();
     }

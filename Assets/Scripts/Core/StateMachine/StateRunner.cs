@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Assets.Scripts.Core.StateMachine
 {
     /// <summary>
-    /// An abstract base class representing a generic state runner. 
+    /// An abstract base class representing a generic state runner.
     /// This class provides basic functionality for managing states within a state machine.
     /// </summary>
     /// <typeparam name="T">The type of states managed by the state runner.</typeparam>
     public abstract class StateRunner<T> : IStateRunner where T : IState
     {
-        protected IState currentState;
         private readonly IEnumerable<T> states;
+
+        protected IState currentState;
 
         /// <summary>
         /// Constructor for StateRunner.
@@ -52,9 +54,24 @@ namespace Assets.Scripts.Core.StateMachine
         }
 
         /// <summary>
-        /// Updates the logic of the current state. 
+        /// Updates the logic of the current state.
         /// Concrete implementations should provide the specific update logic.
         /// </summary>
-        public abstract void UpdateCurrentState();
+        /// <param name="deltaTime">The time elapsed since the last frame.</param>
+        public abstract void UpdateCurrentState(float deltaTime);
+
+        /// <summary>
+        /// Handles physics-related updates for the current state.
+        /// Concrete implementations should provide the specific fixed update logic.
+        /// </summary>
+        /// <param name="fixedDeltaTime">The fixed time step between frames.</param>
+        public abstract void FixedUpdate(float fixedDeltaTime);
+
+        /// <summary>
+        /// Handles input for the current state.
+        /// Concrete implementations should provide the specific input handling logic.
+        /// </summary>
+        /// <param name="input">The input vector representing user input.</param>
+        public abstract void HandleInput(Vector2 input);
     }
 }

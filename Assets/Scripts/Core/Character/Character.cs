@@ -1,3 +1,6 @@
+using Assets.Scripts.Core.Contracts;
+using VContainer;
+
 namespace Assets.Scripts.Core.Character
 {
     /// <summary>
@@ -8,6 +11,9 @@ namespace Assets.Scripts.Core.Character
     /// </remarks>
     public class Character
     {
-        
+        /// <summary>
+        /// Gets or sets the position of the character in a 2D coordinate system.
+        /// </summary>
+        [Inject] public IPosition Position { get; set; }
     }
 }

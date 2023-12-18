@@ -13,6 +13,9 @@ namespace Application.Character
     {
         [Inject] private StateRunner<CharacterState> characterStateRunner;
 
+        /// <summary>
+        /// Initializes the character controller by setting the initial state to IdleState.
+        /// </summary>
         void IStartable.Start()
         {
             characterStateRunner.SetState(typeof(IdleState));
@@ -23,7 +26,17 @@ namespace Application.Character
         /// </summary>
         public void Update()
         {
-            characterStateRunner.UpdateCurrentState();
+            // Update the current state's logical aspects.
+            characterStateRunner.UpdateCurrentState(Time.deltaTime);
+        }
+
+        /// <summary>
+        /// Physics update method called at a fixed time step to handle the character's state updates.
+        /// </summary>
+        public void UpdatePhysics()
+        {
+            // Update the current state's physics-related aspects.
+            characterStateRunner.FixedUpdate(Time.fixedDeltaTime);
         }
     }
 }
