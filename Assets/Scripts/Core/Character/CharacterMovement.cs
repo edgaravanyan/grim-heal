@@ -1,6 +1,5 @@
 using System;
 using System.Numerics;
-using Assets.Scripts.Core.Logger;
 
 namespace Assets.Scripts.Core.Character
 {
@@ -11,17 +10,20 @@ namespace Assets.Scripts.Core.Character
     {
         private readonly Character character;
 
-        private readonly float acceleration = 10;
-        private readonly float deAcceleration;
-        private readonly float moveSpeed = 3;
-        private float currentSpeed = 0;
+        private float acceleration;
+        private float deAcceleration;
+        private float moveSpeed;
+        private float currentSpeed;
 
         public CharacterMovement(Character character)
         {
             this.character = character;
-            // acceleration = character.CharacterStats.Acceleration;
-            // deAcceleration = character.CharacterStats.DeAcceleration;
-            // moveSpeed = character.CharacterStats.MoveSpeed;
+            this.character.OnStatsUpdated += stats =>
+            {
+                acceleration = stats.Acceleration;
+                deAcceleration = stats.DeAcceleration;
+                moveSpeed = stats.MoveSpeed;
+            };
         }
 
         /// <summary>
@@ -32,7 +34,7 @@ namespace Assets.Scripts.Core.Character
         public void Move(float fixedDeltaTime, Vector2 moveDirection)
         {
             // Update the character's position based on the current speed and movement direction.
-            Vector2 position = new Vector2(character.Position.X, character.Position.Y);
+            var position = new Vector2(character.Position.X, character.Position.Y);
             position += currentSpeed * fixedDeltaTime * moveDirection;
             character.Position.Set(position);
         }

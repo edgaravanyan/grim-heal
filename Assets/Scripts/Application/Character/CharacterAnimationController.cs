@@ -64,7 +64,7 @@ namespace Application.Character
             // Subscribe to animation messages.
             messageSubscriber.Subscribe(message =>
             {
-                if (messageHandlers.TryGetValue(message.data, out var handler))
+                if (messageHandlers.TryGetValue(message.Data, out var handler))
                 {
                     handler.Invoke();
                 }

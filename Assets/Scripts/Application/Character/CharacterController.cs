@@ -1,6 +1,7 @@
 using Assets.Scripts.Core.Character.CharacterStates;
 using Assets.Scripts.Core.MessagePipe.Messages;
 using Assets.Scripts.Core.StateMachine;
+using Data;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -11,10 +12,17 @@ namespace Application.Character
     /// <summary>
     /// Responsible for updating the current state of the character.
     /// </summary>
-    public class CharacterController : IStartable
+    public class CharacterController : IStartable, IInitializable
     {
+        [Inject] private DataProvider dataProvider;
+        [Inject] private Assets.Scripts.Core.Character.Character character;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
         [Inject] private ISubscriber<SetCharacterStateMessage> stateChangeSubscriber;
+
+        async void IInitializable.Initialize()
+        {
+            character.CharacterStats = await dataProvider.GetCharacterStatsAsync();
+        }
 
         /// <summary>
         /// Initializes the character controller by setting the initial state to IdleState.
@@ -22,10 +30,7 @@ namespace Application.Character
         void IStartable.Start()
         {
             characterStateRunner.SetState(typeof(IdleState));
-            stateChangeSubscriber.Subscribe(message =>
-            {
-                characterStateRunner.SetState(message.data);
-            });
+            stateChangeSubscriber.Subscribe(message => characterStateRunner.SetState(message.Data));
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace Assets.Scripts.Core.MessagePipe.Messages
     /// <typeparam name="T">The type of message data.</typeparam>
     public abstract class Message<T> : IPoolable<T>
     {
-        public T data { get; private set; }
+        public T Data { get; private set; }
         
         
         /// <summary>
@@ -17,7 +17,7 @@ namespace Assets.Scripts.Core.MessagePipe.Messages
         /// <param name="data">The data to initialize the message.</param>
         public void Initialize(T data)
         {
-            this.data = data;
+            this.Data = data;
         }
     }
 }
