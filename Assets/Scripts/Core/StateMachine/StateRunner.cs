@@ -13,6 +13,9 @@ namespace Assets.Scripts.Core.StateMachine
     {
         private readonly IEnumerable<T> states;
 
+        /// <summary>
+        /// The current state managed by the state runner.
+        /// </summary>
         protected IState currentState;
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace Assets.Scripts.Core.StateMachine
                 }
             }
 
-            throw new ArgumentException($"{GetType().Name} doesn't support the provided state: {stateType.Name}");
+            throw new ArgumentException($"{GetType().Name} doesn't support the provided state type: {stateType.Name}");
         }
 
         /// <summary>
@@ -75,7 +78,8 @@ namespace Assets.Scripts.Core.StateMachine
         /// <param name="deltaTime">The time elapsed since the last frame.</param>
         public virtual void UpdateCurrentState(float deltaTime)
         {
-            currentState?.CheckToChange();
+            currentState.UpdateLogic(deltaTime);
+            currentState.CheckToChange();
         }
 
         /// <summary>
@@ -83,6 +87,9 @@ namespace Assets.Scripts.Core.StateMachine
         /// Concrete implementations should provide the specific fixed update logic.
         /// </summary>
         /// <param name="fixedDeltaTime">The fixed time step between frames.</param>
-        public abstract void FixedUpdate(float fixedDeltaTime);
+        public virtual void FixedUpdate(float fixedDeltaTime)
+        {
+            currentState.UpdatePhysics(fixedDeltaTime);
+        }
     }
 }
