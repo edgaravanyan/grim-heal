@@ -1,6 +1,6 @@
-using Assets.Scripts.Core.Contracts.Pool;
+using Core.Contracts.Pool;
 
-namespace Assets.Scripts.Core.MessagePipe.Messages
+namespace Core.MessagePipe.Messages
 {
     /// <summary>
     /// A base class for implementing poolable messages.

@@ -1,7 +1,7 @@
 using System;
-using Assets.Scripts.Core.Contracts.Messages;
-using Assets.Scripts.Core.Contracts.Pool;
-using Assets.Scripts.Core.MessagePipe;
+using Core.Contracts.Messages;
+using Core.Contracts.Pool;
+using Core.MessagePipe;
 using VContainer;
 
 namespace Application.Messages

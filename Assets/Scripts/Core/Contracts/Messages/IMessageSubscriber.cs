@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.Scripts.Core.Contracts.Messages
+namespace Core.Contracts.Messages
 {
     /// <summary>
     /// Represents a message subscriber interface for a specific message type.

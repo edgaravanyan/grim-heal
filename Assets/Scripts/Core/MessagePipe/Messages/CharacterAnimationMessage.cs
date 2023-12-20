@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.Scripts.Core.MessagePipe.Messages
+namespace Core.MessagePipe.Messages
 {
     /// <summary>
     /// A message class for signaling the need to play a character animation.

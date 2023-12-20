@@ -1,4 +1,4 @@
-namespace Assets.Scripts.Core.Contracts.Pool
+namespace Core.Contracts.Pool
 {
     /// <summary>
     /// Represents an object pool interface.

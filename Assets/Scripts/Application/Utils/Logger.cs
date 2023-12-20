@@ -1,12 +1,12 @@
 using UnityEngine;
-using ILogger = Assets.Scripts.Core.Contracts.ILogger;
+using ILogger = Core.Contracts.ILogger;
 
 namespace Application.Utils
 {
     /// <summary>
     /// Implementation of the ILogger interface using Unity's Debug.Log and Debug.LogWarning.
     /// </summary>
-    public class Logger : ILogger
+    public class Logger : Core.Contracts.ILogger
     {
         /// <summary>
         /// Logs a message using Unity's Debug.Log.

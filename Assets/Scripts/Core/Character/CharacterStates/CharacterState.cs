@@ -1,10 +1,9 @@
-using System;
 using System.Numerics;
-using Assets.Scripts.Core.MessagePipe;
-using Assets.Scripts.Core.MessagePipe.Messages;
-using Assets.Scripts.Core.StateMachine;
+using Core.Contracts.Messages;
+using Core.MessagePipe.Messages;
+using Core.StateMachine;
 
-namespace Assets.Scripts.Core.Character.CharacterStates
+namespace Core.Character.CharacterStates
 {
     /// <summary>
     /// An abstract adapter of IState inherited by specific states of the character.
@@ -16,9 +15,9 @@ namespace Assets.Scripts.Core.Character.CharacterStates
     {
         protected Vector2 Input;
         protected Character character;
-        protected MessageManager messageManager;
+        protected IMessageManager messageManager;
 
-        public CharacterState(Character character, MessageManager messageManager)
+        public CharacterState(Character character, IMessageManager messageManager)
         {
             this.character = character;
             this.messageManager = messageManager;

@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Assets.Scripts.Core.Contracts
+namespace Core.Contracts
 {
     /// <summary>
     /// Represents a 2D position in a Cartesian coordinate system.

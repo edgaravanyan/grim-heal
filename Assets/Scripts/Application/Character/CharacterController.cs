@@ -1,9 +1,8 @@
-using Assets.Scripts.Core.Character.CharacterStates;
-using Assets.Scripts.Core.MessagePipe;
-using Assets.Scripts.Core.MessagePipe.Messages;
-using Assets.Scripts.Core.StateMachine;
+using Core.Character.CharacterStates;
+using Core.Contracts.Messages;
+using Core.MessagePipe.Messages;
+using Core.StateMachine;
 using Data;
-using MessagePipe;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -16,9 +15,9 @@ namespace Application.Character
     public class CharacterController : IStartable, IInitializable
     {
         [Inject] private DataProvider dataProvider;
-        [Inject] private Assets.Scripts.Core.Character.Character character;
+        [Inject] private Core.Character.Character character;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
-        [Inject] private MessageManager messageManager;
+        [Inject] private IMessageManager messageManager;
 
         async void IInitializable.Initialize()
         {

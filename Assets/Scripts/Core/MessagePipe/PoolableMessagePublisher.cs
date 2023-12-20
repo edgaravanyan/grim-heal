@@ -1,8 +1,7 @@
-using Assets.Scripts.Core.Contracts;
-using Assets.Scripts.Core.Contracts.Messages;
-using Assets.Scripts.Core.Contracts.Pool;
+using Core.Contracts.Messages;
+using Core.Contracts.Pool;
 
-namespace Assets.Scripts.Core.MessagePipe
+namespace Core.MessagePipe
 {
     /// <summary>
     /// Provides a wrapper around IPublisher for publishing poolable messages and ensuring proper disposal.

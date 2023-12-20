@@ -1,6 +1,6 @@
-using Assets.Scripts.Core.Contracts;
+using Core.Contracts;
 
-namespace Assets.Scripts.Core.MessagePipe.Messages
+namespace Core.MessagePipe.Messages
 {
     /// <summary>
     /// Represents a message indicating an update to the position.

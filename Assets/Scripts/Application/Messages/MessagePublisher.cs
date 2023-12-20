@@ -1,4 +1,4 @@
-using Assets.Scripts.Core.Contracts.Messages;
+using Core.Contracts.Messages;
 using MessagePipe;
 using VContainer;
 

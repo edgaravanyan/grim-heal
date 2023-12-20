@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.Scripts.Core.Contracts.Messages
+namespace Core.Contracts.Messages
 {
     /// <summary>
     /// Represents the registration information for a message publisher or subscriber.

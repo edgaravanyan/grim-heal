@@ -1,7 +1,7 @@
 using System;
-using Assets.Scripts.Core.Contracts;
+using Core.Contracts;
 
-namespace Assets.Scripts.Core.Character
+namespace Core.Character
 {
     /// <summary>
     /// A model class representing a game character.

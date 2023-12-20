@@ -6,7 +6,7 @@ namespace Application.Utils
     /// Adapter for Unity's ObjectPool implementing IObjectPool interface.
     /// </summary>
     /// <typeparam name="T">The type of objects to pool.</typeparam>
-    public class ObjectPoolAdapter<T> : Assets.Scripts.Core.Contracts.Pool.IObjectPool<T> where T : class, new()
+    public class ObjectPoolAdapter<T> : Core.Contracts.Pool.IObjectPool<T> where T : class, new()
     {
         private readonly ObjectPool<T> pool = new(() => new T());
 

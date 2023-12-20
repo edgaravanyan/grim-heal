@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 
-namespace Assets.Scripts.Core.Character
+namespace Core.Character
 {
     /// <summary>
     /// Manages the movement of the character, including speed calculation and movement.

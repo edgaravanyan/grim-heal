@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 
-namespace Assets.Scripts.Core.StateMachine
+namespace Core.StateMachine
 {
     /// <summary>
     /// Interface for a state machine runner.

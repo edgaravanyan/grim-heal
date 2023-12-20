@@ -1,10 +1,10 @@
 using System;
 using Application.Input;
-using Assets.Scripts.Core.Character.CharacterStates;
-using Assets.Scripts.Core.Contracts;
-using Assets.Scripts.Core.MessagePipe;
-using Assets.Scripts.Core.MessagePipe.Messages;
-using Assets.Scripts.Core.StateMachine;
+using Core.Character.CharacterStates;
+using Core.Contracts;
+using Core.Contracts.Messages;
+using Core.MessagePipe.Messages;
+using Core.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -20,7 +20,7 @@ namespace Application.Character
         [Inject] private InputActions input;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
         [Inject] private ICharacterView characterView;
-        [Inject] private MessageManager messageManager;
+        [Inject] private IMessageManager messageManager;
 
         /// <summary>
         /// Initializes the character movement controller by subscribing to movement input events.

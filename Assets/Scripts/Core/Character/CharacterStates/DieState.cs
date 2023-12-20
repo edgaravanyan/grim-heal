@@ -1,6 +1,6 @@
-using Assets.Scripts.Core.MessagePipe;
+using Core.Contracts.Messages;
 
-namespace Assets.Scripts.Core.Character.CharacterStates
+namespace Core.Character.CharacterStates
 {
     /// <summary>
     /// Represents the state of a character when it is in the process of dying or has died.
@@ -12,7 +12,7 @@ namespace Assets.Scripts.Core.Character.CharacterStates
         /// </summary>
         /// <param name="character">The character associated with this state.</param>
         /// <param name="messageManager">The message manager for handling message communication.</param>
-        public DieState(Character character, MessageManager messageManager)
+        public DieState(Character character, IMessageManager messageManager)
             : base(character, messageManager) { }
     }
 }

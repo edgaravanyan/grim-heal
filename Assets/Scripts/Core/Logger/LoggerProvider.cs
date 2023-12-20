@@ -1,6 +1,6 @@
-using Assets.Scripts.Core.Contracts;
+using Core.Contracts;
 
-namespace Assets.Scripts.Core.Logger
+namespace Core.Logger
 {
     /// <summary>
     /// Provides a static access point for an ILogger instance.

@@ -1,4 +1,4 @@
-using Assets.Scripts.Core.Contracts;
+using Core.Contracts;
 using UnityEngine;
 
 namespace Application.Utils

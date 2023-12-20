@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace Assets.Scripts.Core.StateMachine
+namespace Core.StateMachine
 {
     /// <summary>
     /// An abstract base class representing a generic state runner.

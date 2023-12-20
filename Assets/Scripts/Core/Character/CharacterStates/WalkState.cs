@@ -1,7 +1,7 @@
-using Assets.Scripts.Core.MessagePipe;
-using Assets.Scripts.Core.MessagePipe.Messages;
+using Core.Contracts.Messages;
+using Core.MessagePipe.Messages;
 
-namespace Assets.Scripts.Core.Character.CharacterStates
+namespace Core.Character.CharacterStates
 {
     /// <summary>
     /// Represents the walking state of a game character. Inherits from CharacterState.
@@ -12,7 +12,7 @@ namespace Assets.Scripts.Core.Character.CharacterStates
 
         public WalkState(Character character,
             CharacterMovement characterMovement,
-            MessageManager messageManager)
+            IMessageManager messageManager)
         :base(character, messageManager)
         {
             this.characterMovement = characterMovement;

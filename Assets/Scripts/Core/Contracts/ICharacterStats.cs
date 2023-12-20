@@ -1,4 +1,4 @@
-namespace Assets.Scripts.Core.Contracts
+namespace Core.Contracts
 {
     /// <summary>
     /// Represents the stats of a character.

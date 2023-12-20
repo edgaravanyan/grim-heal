@@ -1,5 +1,5 @@
 using Application.Character;
-using Assets.Scripts.Core.Contracts;
+using Core.Contracts;
 using UnityEngine;
 
 namespace View.Character

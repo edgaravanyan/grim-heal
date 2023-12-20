@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Assets.Scripts.Core.StateMachine
+namespace Core.StateMachine
 {
     /// <summary>
     /// Represents the contract for any state in the state machine.

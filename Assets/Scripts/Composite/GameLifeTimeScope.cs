@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using Application.Character;
 using Application.Input;
+using Application.Managers;
 using Application.Messages;
 using Application.Utils;
-using Assets.Scripts.Core.Character;
-using Assets.Scripts.Core.Character.CharacterStates;
-using Assets.Scripts.Core.Contracts;
-using Assets.Scripts.Core.Contracts.Messages;
-using Assets.Scripts.Core.Contracts.Pool;
-using Assets.Scripts.Core.Logger;
-using Assets.Scripts.Core.MessagePipe;
-using Assets.Scripts.Core.MessagePipe.Messages;
-using Assets.Scripts.Core.StateMachine;
+using Core.Character;
+using Core.Character.CharacterStates;
+using Core.Contracts;
+using Core.Contracts.Messages;
+using Core.Contracts.Pool;
+using Core.Logger;
+using Core.MessagePipe;
+using Core.MessagePipe.Messages;
+using Core.StateMachine;
 using Data;
 using Data.Character;
 using MessagePipe;
@@ -39,13 +40,13 @@ namespace Composite
         /// <param name="builder">The container builder to register dependencies.</param>
         protected override void Configure(IContainerBuilder builder)
         {
+            RegisterMessagePipe(builder);
             RegisterDataAdapters(builder);
             
             RegisterViewAdapters(builder);
             RegisterApplicationAdapters(builder);
 
             RegisterInput(builder);
-            RegisterMessagePipe(builder);
 
             RegisterCharacter(builder);
         }
@@ -127,7 +128,7 @@ namespace Composite
             builder.Register<IMessageRegistration, MessageRegistration<PositionUpdateMessage>>(Lifetime.Singleton);
             builder.Register<IMessageRegistration, MessageRegistration<SetCharacterStateMessage>>(Lifetime.Singleton);
 
-            builder.Register<MessageManager>(Lifetime.Singleton).AsSelf();
+            builder.Register<IMessageManager, MessageManager>(Lifetime.Singleton);
         }
 
         /// <summary>

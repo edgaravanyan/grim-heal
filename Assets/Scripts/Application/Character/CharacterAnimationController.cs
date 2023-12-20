@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Assets.Scripts.Core.Character.CharacterStates;
-using Assets.Scripts.Core.Contracts;
-using Assets.Scripts.Core.MessagePipe;
-using Assets.Scripts.Core.MessagePipe.Messages;
+using Application.Managers;
+using Core.Character.CharacterStates;
+using Core.Contracts;
+using Core.Contracts.Messages;
+using Core.MessagePipe.Messages;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -20,7 +21,7 @@ namespace Application.Character
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
 
         [Inject] private ICharacterView characterView;
-        [Inject] private MessageManager messageManager;
+        [Inject] private IMessageManager messageManager;
 
         private readonly Dictionary<Type, Action> messageHandlers = new ();
 

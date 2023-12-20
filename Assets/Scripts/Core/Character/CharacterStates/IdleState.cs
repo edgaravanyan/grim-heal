@@ -1,15 +1,14 @@
-using System;
-using Assets.Scripts.Core.MessagePipe;
-using Assets.Scripts.Core.MessagePipe.Messages;
+using Core.Contracts.Messages;
+using Core.MessagePipe.Messages;
 
-namespace Assets.Scripts.Core.Character.CharacterStates
+namespace Core.Character.CharacterStates
 {
     /// <summary>
     /// Represents the idle state of the character.
     /// </summary>
     public class IdleState : CharacterState
     {
-        public IdleState(Character character, MessageManager messageManager)
+        public IdleState(Character character, IMessageManager messageManager)
             : base(character,messageManager) { }
         
         /// <summary>
