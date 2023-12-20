@@ -6,9 +6,15 @@ namespace Assets.Scripts.Core.Contracts
     public interface ILogger
     {
         /// <summary>
-        /// Logs a message.
+        /// Logs a general message.
         /// </summary>
         /// <param name="message">The message to be logged.</param>
         void Log(string message);
+
+        /// <summary>
+        /// Logs a warning message.
+        /// </summary>
+        /// <param name="warningMessage">The warning message to be logged.</param>
+        void Warn(string warningMessage);
     }
 }

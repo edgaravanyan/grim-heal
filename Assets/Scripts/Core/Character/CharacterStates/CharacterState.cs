@@ -14,19 +14,14 @@ namespace Assets.Scripts.Core.Character.CharacterStates
     /// </remarks>
     public abstract class CharacterState : IState
     {
-        private PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher;
-        
         protected Vector2 Input;
         protected Character character;
-        protected PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher;
+        protected MessageManager messageManager;
 
-        public CharacterState(Character character,
-            PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher,
-            PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher)
+        public CharacterState(Character character, MessageManager messageManager)
         {
             this.character = character;
-            this.animationPublisher = animationPublisher;
-            this.setStatePublisher = setStatePublisher;
+            this.messageManager = messageManager;
         }
 
         /// <summary>
@@ -34,7 +29,7 @@ namespace Assets.Scripts.Core.Character.CharacterStates
         /// </summary>
         public virtual void Enter()
         {
-            animationPublisher.Publish(this.GetType());
+            messageManager.Publish<CharacterAnimationMessage>(this.GetType());
         }
 
         /// <summary>

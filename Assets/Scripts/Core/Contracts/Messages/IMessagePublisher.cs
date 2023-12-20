@@ -1,4 +1,4 @@
-namespace Assets.Scripts.Core.Contracts
+namespace Assets.Scripts.Core.Contracts.Messages
 {
     /// <summary>
     /// Represents a message publisher interface for a specific message type.

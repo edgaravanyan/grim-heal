@@ -1,4 +1,5 @@
 using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.MessagePipe;
 using Assets.Scripts.Core.MessagePipe.Messages;
 using Assets.Scripts.Core.StateMachine;
 using Data;
@@ -17,7 +18,7 @@ namespace Application.Character
         [Inject] private DataProvider dataProvider;
         [Inject] private Assets.Scripts.Core.Character.Character character;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
-        [Inject] private ISubscriber<SetCharacterStateMessage> stateChangeSubscriber;
+        [Inject] private MessageManager messageManager;
 
         async void IInitializable.Initialize()
         {
@@ -30,7 +31,7 @@ namespace Application.Character
         void IStartable.Start()
         {
             characterStateRunner.SetState(typeof(IdleState));
-            stateChangeSubscriber.Subscribe(message => characterStateRunner.SetState(message.Data));
+            messageManager.Subscribe<SetCharacterStateMessage>(message => characterStateRunner.SetState(message.Data));
         }
 
         /// <summary>

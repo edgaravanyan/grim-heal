@@ -9,12 +9,8 @@ namespace Assets.Scripts.Core.Character.CharacterStates
     /// </summary>
     public class IdleState : CharacterState
     {
-        public IdleState(Character character,
-            PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher,
-            PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher)
-            : base(character,
-                animationPublisher,
-                setStatePublisher) { }
+        public IdleState(Character character, MessageManager messageManager)
+            : base(character,messageManager) { }
         
         /// <summary>
         /// Checks for a change to the WalkState based on movement input.
@@ -26,7 +22,7 @@ namespace Assets.Scripts.Core.Character.CharacterStates
             // Check if there is movement input, and transition to the WalkState if true.
             if (Input.LengthSquared() > 0)
             {
-                setStatePublisher.Publish(typeof(WalkState));
+                messageManager.Publish<SetCharacterStateMessage>(typeof(WalkState));
             }
         }
     }

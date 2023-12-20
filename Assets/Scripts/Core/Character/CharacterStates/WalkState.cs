@@ -1,6 +1,3 @@
-using System;
-using Assets.Scripts.Core.Contracts;
-using Assets.Scripts.Core.Logger;
 using Assets.Scripts.Core.MessagePipe;
 using Assets.Scripts.Core.MessagePipe.Messages;
 
@@ -11,21 +8,14 @@ namespace Assets.Scripts.Core.Character.CharacterStates
     /// </summary>
     public class WalkState : CharacterState
     {
-        protected CharacterMovement characterMovement;
-        protected PoolableMessagePublisher<PositionUpdateMessage, IPosition> positionPublisher;
+        private CharacterMovement characterMovement;
 
         public WalkState(Character character,
             CharacterMovement characterMovement,
-            PoolableMessagePublisher<CharacterAnimationMessage, Type> animationPublisher,
-            PoolableMessagePublisher<SetCharacterStateMessage, Type> setStatePublisher,
-            PoolableMessagePublisher<PositionUpdateMessage, IPosition> positionPublisher)
-        :base(
-            character,
-            animationPublisher,
-            setStatePublisher)
+            MessageManager messageManager)
+        :base(character, messageManager)
         {
             this.characterMovement = characterMovement;
-            this.positionPublisher = positionPublisher;
         }
         
         /// <summary>
@@ -46,7 +36,7 @@ namespace Assets.Scripts.Core.Character.CharacterStates
         {
             base.UpdatePhysics(fixedDeltaTime);
             characterMovement.Move(fixedDeltaTime, Input);
-            positionPublisher.Publish(character.Position);
+            messageManager.Publish<PositionUpdateMessage>(character.Position);
         }
 
         /// <summary>
@@ -59,7 +49,7 @@ namespace Assets.Scripts.Core.Character.CharacterStates
             // Check if there is no movement input, and transition to the IdleState if true.
             if (Input.LengthSquared() == 0)
             {
-                setStatePublisher.Publish(typeof(IdleState));
+                messageManager.Publish<SetCharacterStateMessage>(typeof(IdleState));
             }
         }
     }

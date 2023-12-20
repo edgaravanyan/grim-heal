@@ -7,6 +7,7 @@ using Application.Utils;
 using Assets.Scripts.Core.Character;
 using Assets.Scripts.Core.Character.CharacterStates;
 using Assets.Scripts.Core.Contracts;
+using Assets.Scripts.Core.Contracts.Messages;
 using Assets.Scripts.Core.Contracts.Pool;
 using Assets.Scripts.Core.Logger;
 using Assets.Scripts.Core.MessagePipe;
@@ -83,13 +84,6 @@ namespace Composite
         /// <param name="builder">The container builder to register dependencies.</param>
         private void RegisterApplicationAdapters(IContainerBuilder builder)
         {
-            builder.Register<IMessagePublisher<CharacterAnimationMessage>, MessagePublisher<CharacterAnimationMessage>>(Lifetime.Singleton);
-            builder.Register<IMessagePublisher<PositionUpdateMessage>, MessagePublisher<PositionUpdateMessage>>(Lifetime.Singleton);
-            builder.Register<IMessagePublisher<SetCharacterStateMessage>, MessagePublisher<SetCharacterStateMessage>>(Lifetime.Singleton);
-
-            builder.Register<IObjectPool<CharacterAnimationMessage>, ObjectPoolAdapter<CharacterAnimationMessage>>(Lifetime.Singleton);
-            builder.Register<IObjectPool<PositionUpdateMessage>, ObjectPoolAdapter<PositionUpdateMessage>>(Lifetime.Singleton);
-            builder.Register<IObjectPool<SetCharacterStateMessage>, ObjectPoolAdapter<SetCharacterStateMessage>>(Lifetime.Singleton);
 
             builder.Register<IPosition, Position>(Lifetime.Transient);
 
@@ -113,9 +107,27 @@ namespace Composite
             builder.RegisterMessageBroker<PositionUpdateMessage>(options);
             builder.RegisterMessageBroker<SetCharacterStateMessage>(options);
 
-            builder.Register<PoolableMessagePublisher<CharacterAnimationMessage, Type>>(Lifetime.Singleton).AsSelf();
-            builder.Register<PoolableMessagePublisher<PositionUpdateMessage, IPosition>>(Lifetime.Singleton).AsSelf();
-            builder.Register<PoolableMessagePublisher<SetCharacterStateMessage, Type>>(Lifetime.Singleton).AsSelf();
+            builder.Register<PoolableMessagePublisher<CharacterAnimationMessage>>(Lifetime.Singleton).AsSelf();
+            builder.Register<PoolableMessagePublisher<PositionUpdateMessage>>(Lifetime.Singleton).AsSelf();
+            builder.Register<PoolableMessagePublisher<SetCharacterStateMessage>>(Lifetime.Singleton).AsSelf();
+            
+            builder.Register<IMessagePublisher<CharacterAnimationMessage>, MessagePublisher<CharacterAnimationMessage>>(Lifetime.Singleton);
+            builder.Register<IMessagePublisher<PositionUpdateMessage>, MessagePublisher<PositionUpdateMessage>>(Lifetime.Singleton);
+            builder.Register<IMessagePublisher<SetCharacterStateMessage>, MessagePublisher<SetCharacterStateMessage>>(Lifetime.Singleton);
+            
+            builder.Register<IMessageSubscriber<CharacterAnimationMessage>, MessageSubscriber<CharacterAnimationMessage>>(Lifetime.Singleton);
+            builder.Register<IMessageSubscriber<PositionUpdateMessage>, MessageSubscriber<PositionUpdateMessage>>(Lifetime.Singleton);
+            builder.Register<IMessageSubscriber<SetCharacterStateMessage>, MessageSubscriber<SetCharacterStateMessage>>(Lifetime.Singleton);
+
+            builder.Register<IObjectPool<CharacterAnimationMessage>, ObjectPoolAdapter<CharacterAnimationMessage>>(Lifetime.Singleton);
+            builder.Register<IObjectPool<PositionUpdateMessage>, ObjectPoolAdapter<PositionUpdateMessage>>(Lifetime.Singleton);
+            builder.Register<IObjectPool<SetCharacterStateMessage>, ObjectPoolAdapter<SetCharacterStateMessage>>(Lifetime.Singleton);
+
+            builder.Register<IMessageRegistration, MessageRegistration<CharacterAnimationMessage>>(Lifetime.Singleton);
+            builder.Register<IMessageRegistration, MessageRegistration<PositionUpdateMessage>>(Lifetime.Singleton);
+            builder.Register<IMessageRegistration, MessageRegistration<SetCharacterStateMessage>>(Lifetime.Singleton);
+
+            builder.Register<MessageManager>(Lifetime.Singleton).AsSelf();
         }
 
         /// <summary>

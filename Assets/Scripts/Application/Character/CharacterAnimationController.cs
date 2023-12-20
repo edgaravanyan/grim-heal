@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.Contracts;
+using Assets.Scripts.Core.MessagePipe;
 using Assets.Scripts.Core.MessagePipe.Messages;
-using MessagePipe;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -12,17 +13,16 @@ namespace Application.Character
     /// <summary>
     /// Controls character animations based on incoming messages.
     /// </summary>
-    public class CharacterAnimationController : IInitializable, IDisposable
+    public class CharacterAnimationController : IInitializable
     {
         private static readonly int IdleTriggerHash = Animator.StringToHash("Idle");
         private static readonly int WalkTriggerHash = Animator.StringToHash("Walk");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
 
         [Inject] private ICharacterView characterView;
-        [Inject] private ISubscriber<CharacterAnimationMessage> messageSubscriber;
+        [Inject] private MessageManager messageManager;
 
         private readonly Dictionary<Type, Action> messageHandlers = new ();
-        private IDisposable messageBag;
 
         /// <summary>
         /// Initializes the CharacterAnimationController.
@@ -59,18 +59,14 @@ namespace Application.Character
 
         private void RegisterSubscribers()
         {
-            var disposableBagBuilder = DisposableBag.CreateBuilder();
-
             // Subscribe to animation messages.
-            messageSubscriber.Subscribe(message =>
+            messageManager.Subscribe<CharacterAnimationMessage>(message =>
             {
                 if (messageHandlers.TryGetValue(message.Data, out var handler))
                 {
                     handler.Invoke();
                 }
-            }).AddTo(disposableBagBuilder);
-
-            messageBag = disposableBagBuilder.Build();
+            });
         }
 
         private void RegisterMessageHandlers()
@@ -79,14 +75,6 @@ namespace Application.Character
             messageHandlers.Add(typeof(WalkState), PlayWalkAnimation);
             messageHandlers.Add(typeof(DieState), PlayDieAnimation);
             // Add more message handlers as needed.
-        }
-
-        /// <summary>
-        /// Disposes of resources used by the CharacterAnimationController.
-        /// </summary>
-        public void Dispose()
-        {
-            messageBag.Dispose();
         }
     }
 }

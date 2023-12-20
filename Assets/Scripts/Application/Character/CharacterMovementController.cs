@@ -1,9 +1,10 @@
 using System;
 using Application.Input;
 using Assets.Scripts.Core.Character.CharacterStates;
+using Assets.Scripts.Core.Contracts;
+using Assets.Scripts.Core.MessagePipe;
 using Assets.Scripts.Core.MessagePipe.Messages;
 using Assets.Scripts.Core.StateMachine;
-using MessagePipe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -19,7 +20,7 @@ namespace Application.Character
         [Inject] private InputActions input;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
         [Inject] private ICharacterView characterView;
-        [Inject] private ISubscriber<PositionUpdateMessage> messageSubscriber;
+        [Inject] private MessageManager messageManager;
 
         /// <summary>
         /// Initializes the character movement controller by subscribing to movement input events.
@@ -28,7 +29,7 @@ namespace Application.Character
         {
             input.Game.Movement.performed += CaptureInput;
             input.Game.Movement.canceled += CaptureInput;
-            messageSubscriber.Subscribe(message => characterView.SetPosition(message.Data));
+            messageManager.Subscribe<PositionUpdateMessage>(message => characterView.SetPosition(message.Data));
         }
 
         /// <summary>

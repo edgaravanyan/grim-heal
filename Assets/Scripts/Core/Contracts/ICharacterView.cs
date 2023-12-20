@@ -1,6 +1,4 @@
-using Assets.Scripts.Core.Contracts;
-
-namespace Application.Character
+namespace Assets.Scripts.Core.Contracts
 {
     /// <summary>
     /// Interface for character view.
