@@ -42,6 +42,7 @@ namespace Application.Managers
             }
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// Publishes a message of type <typeparamref name="TMessage"/> with the provided data.
         /// </summary>

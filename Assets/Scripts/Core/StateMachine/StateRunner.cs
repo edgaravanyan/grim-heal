@@ -60,6 +60,15 @@ namespace Core.StateMachine
         }
 
         /// <summary>
+        /// Sets the current state to the specified type.
+        /// </summary>
+        /// <typeparam name="TState">The type of the state to set.</typeparam>
+        public void SetState<TState>() where TState : IState
+        {
+            SetState(typeof(TState));
+        }
+
+        /// <summary>
         /// Handles input for the current state.
         /// </summary>
         /// <param name="input">The input vector representing user input.</param>

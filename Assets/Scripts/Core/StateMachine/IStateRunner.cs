@@ -13,6 +13,12 @@ namespace Core.StateMachine
         /// </summary>
         /// <param name="stateType">The type of the new state.</param>
         void SetState(Type stateType);
+        
+        /// <summary>
+        /// Sets the current state to the specified type.
+        /// </summary>
+        /// <typeparam name="TState">The type of the state to set.</typeparam>
+        void SetState<TState>() where TState : IState;
 
         /// <summary>
         /// Updates the logic of the current state.

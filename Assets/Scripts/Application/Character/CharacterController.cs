@@ -10,7 +10,7 @@ using VContainer.Unity;
 namespace Application.Character
 {
     /// <summary>
-    /// Responsible for updating the current state of the character.
+    /// Controls and updates the state of the character.
     /// </summary>
     public class CharacterController : IStartable, IInitializable
     {
@@ -19,36 +19,49 @@ namespace Application.Character
         [Inject] private StateRunner<CharacterState> characterStateRunner;
         [Inject] private IMessageManager messageManager;
 
+        /// <summary>
+        /// Initializes the CharacterController by asynchronously retrieving character stats and performing additional setup.
+        /// </summary>
         async void IInitializable.Initialize()
         {
+            // Asynchronously initialize character stats.
             character.CharacterStats = await dataProvider.GetCharacterStatsAsync();
         }
 
         /// <summary>
-        /// Initializes the character controller by setting the initial state to IdleState.
+        /// Starts the character controller by setting the initial state to IdleState.
         /// </summary>
         void IStartable.Start()
         {
-            characterStateRunner.SetState(typeof(IdleState));
-            messageManager.Subscribe<SetCharacterStateMessage>(message => characterStateRunner.SetState(message.Data));
+            // Set the initial state to IdleState.
+            characterStateRunner.SetState<IdleState>();
+            messageManager.Subscribe<SetCharacterStateMessage>(SetCharacterState);
         }
 
         /// <summary>
-        /// Update method called per frame to handle the character's state updates.
+        /// Handles the character state update during each frame.
         /// </summary>
         public void Update()
         {
-            // Update the current state's logical aspects.
+            // Update logical aspects of the current state.
             characterStateRunner.UpdateCurrentState(Time.deltaTime);
         }
 
         /// <summary>
-        /// Physics update method called at a fixed time step to handle the character's state updates.
+        /// Handles the character state update during fixed time steps for physics.
         /// </summary>
         public void UpdatePhysics()
         {
-            // Update the current state's physics-related aspects.
+            // Update physics-related aspects of the current state.
             characterStateRunner.FixedUpdate(Time.fixedDeltaTime);
+        }
+
+        /// <summary>
+        /// Sets the character state based on the received message.
+        /// </summary>
+        private void SetCharacterState(SetCharacterStateMessage message)
+        {
+            characterStateRunner.SetState(message.Data);
         }
     }
 }
