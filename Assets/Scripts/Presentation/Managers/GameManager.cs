@@ -1,14 +1,13 @@
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 using CharacterController = Application.Character.CharacterController;
 
-namespace Application.Managers
+namespace Presentation.Managers
 {
     /// <summary>
     /// Manages the overall game flow, including the main game logic and physics updates.
     /// </summary>
-    public class GameManager : MonoBehaviour, IInitializable
+    public class GameManager : MonoBehaviour
     {
         [Inject] private CharacterController characterController;
 
@@ -28,11 +27,6 @@ namespace Application.Managers
         {
             // Update the character controller's physics-related aspects.
             characterController.UpdatePhysics();
-        }
-
-        public void Initialize()
-        {
-            Debug.Log(characterController);
         }
     }
 }

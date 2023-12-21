@@ -1,8 +1,7 @@
-using Application.Character;
 using Core.Contracts;
 using UnityEngine;
 
-namespace View.Character
+namespace Presentation.Character
 {
     /// <summary>
     /// Represents the visual view of a character in the game.

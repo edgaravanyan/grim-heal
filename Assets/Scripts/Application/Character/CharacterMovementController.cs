@@ -1,24 +1,16 @@
-using System;
-using Application.Input;
-using Core.Character.CharacterStates;
 using Core.Contracts;
 using Core.Contracts.Messages;
 using Core.MessagePipe.Messages;
-using Core.StateMachine;
-using UnityEngine;
-using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
 namespace Application.Character
 {
     /// <summary>
-    /// Handles character movement input and updates the character state accordingly.
+    /// Handles character movement
     /// </summary>
-    public class CharacterMovementController : IInitializable, IDisposable
+    public class CharacterMovementController : IInitializable
     {
-        [Inject] private InputActions input;
-        [Inject] private StateRunner<CharacterState> characterStateRunner;
         [Inject] private ICharacterView characterView;
         [Inject] private IMessageManager messageManager;
 
@@ -27,30 +19,7 @@ namespace Application.Character
         /// </summary>
         void IInitializable.Initialize()
         {
-            input.Game.Movement.performed += CaptureInput;
-            input.Game.Movement.canceled += CaptureInput;
             messageManager.Subscribe<PositionUpdateMessage>(message => characterView.SetPosition(message.Data));
-        }
-
-        /// <summary>
-        /// Captures movement input and updates the character state with the input vector.
-        /// </summary>
-        /// <param name="context">The InputAction.CallbackContext containing the input data.</param>
-        private void CaptureInput(InputAction.CallbackContext context)
-        {
-            // Read the movement input vector from the input context and pass it to the character state runner.
-            var movementInput = context.ReadValue<Vector2>();
-            var vector2 = new System.Numerics.Vector2(movementInput.x, movementInput.y);
-            characterStateRunner.HandleInput(vector2);
-        }
-
-        /// <summary>
-        /// Unsubscribes from movement input events when the character movement controller is disposed.
-        /// </summary>
-        void IDisposable.Dispose()
-        {
-            input.Game.Movement.performed -= CaptureInput;
-            input.Game.Movement.canceled -= CaptureInput;
         }
     }
 }

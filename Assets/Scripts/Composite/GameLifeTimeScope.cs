@@ -17,10 +17,10 @@ using Core.StateMachine;
 using Data;
 using Data.Character;
 using MessagePipe;
+using Presentation.Character;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using View.Character;
 using CharacterController = Application.Character.CharacterController;
 using Logger = Application.Utils.Logger;
 
