@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using Core.Contracts;
 
 namespace Core.Character
@@ -33,15 +34,6 @@ namespace Core.Character
         /// <summary>
         /// Gets or sets the position of the character in a 2D coordinate system.
         /// </summary>
-        public IPosition Position { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Character"/> class.
-        /// </summary>
-        /// <param name="position">The initial position of the character.</param>
-        public Character(IPosition position)
-        {
-            Position = position;
-        }
+        public Vector2 Position { get; set; }
     }
 }

@@ -34,9 +34,7 @@ namespace Core.Character
         public void Move(float fixedDeltaTime, Vector2 moveDirection)
         {
             // Update the character's position based on the current speed and movement direction.
-            var position = new Vector2(character.Position.X, character.Position.Y);
-            position += currentSpeed * fixedDeltaTime * moveDirection;
-            character.Position.Set(position);
+            character.Position += currentSpeed * fixedDeltaTime * moveDirection;
         }
 
         /// <summary>

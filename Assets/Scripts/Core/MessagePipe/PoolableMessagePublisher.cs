@@ -7,7 +7,7 @@ namespace Core.MessagePipe
     /// Provides a wrapper around IPublisher for publishing poolable messages and ensuring proper disposal.
     /// </summary>
     /// <typeparam name="TMessage">The type of the poolable message.</typeparam>
-    public class PoolableMessagePublisher<TMessage> where TMessage : class, IPoolable
+    public class PoolableMessagePublisher<TMessage> where TMessage : class, IMessage
     {
         private IObjectPool<TMessage> messagePool;
         private IMessagePublisher<TMessage> publisher;

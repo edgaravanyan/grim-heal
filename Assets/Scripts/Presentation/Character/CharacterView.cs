@@ -33,7 +33,7 @@ namespace Presentation.Character
         /// Sets the position of the character view in the game world.
         /// </summary>
         /// <param name="position">The new position for the character.</param>
-        public void SetPosition(IPosition position)
+        public void SetPosition(System.Numerics.Vector2 position)
         {
             // Set the GameObject's position based on the provided coordinates.
             transform.position = new Vector2(position.X, position.Y);

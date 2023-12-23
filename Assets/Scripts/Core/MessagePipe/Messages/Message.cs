@@ -1,14 +1,14 @@
-using Core.Contracts.Pool;
+using Core.Contracts.Messages;
 
 namespace Core.MessagePipe.Messages
 {
     /// <summary>
     /// A base class for implementing poolable messages.
     /// </summary>
-    /// <typeparam name="T">The type of message data.</typeparam>
-    public abstract class Message<T> : IPoolable
+    /// <typeparam name="TData">The type of message data.</typeparam>
+    public abstract class Message<TData> : IMessage
     {
-        public T Data { get; private set; }
+        public TData Data { get; private set; }
         
         
         /// <summary>
@@ -17,7 +17,7 @@ namespace Core.MessagePipe.Messages
         /// <param name="data">The data to initialize the message.</param>
         public void Initialize(object data)
         {
-            if (data != null) Data = (T)data;
+            if (data != null) Data = (TData)data;
         }
     }
 }

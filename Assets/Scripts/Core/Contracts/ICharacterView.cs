@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace Core.Contracts
 {
     /// <summary>
@@ -15,6 +17,6 @@ namespace Core.Contracts
         /// Sets the position of the character view.
         /// </summary>
         /// <param name="position">The new position.</param>
-        void SetPosition(IPosition position);
+        void SetPosition(Vector2 position);
     }
 }

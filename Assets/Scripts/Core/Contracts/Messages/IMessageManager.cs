@@ -1,5 +1,4 @@
 using System;
-using Core.Contracts.Pool;
 
 namespace Core.Contracts.Messages
 {
@@ -13,7 +12,7 @@ namespace Core.Contracts.Messages
         /// </summary>
         /// <typeparam name="TMessage">The type of message to be published.</typeparam>
         /// <param name="data">The data associated with the message.</param>
-        void Publish<TMessage>(object data) where TMessage : class, IPoolable;
+        void Publish<TMessage>(object data) where TMessage : class, IMessage;
 
         /// <summary>
         /// Subscribes to messages of the specified type with the provided handler.

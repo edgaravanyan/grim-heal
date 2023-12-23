@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Application.Character;
 using Application.Input;
 using Application.Managers;
@@ -11,13 +9,14 @@ using Core.Contracts;
 using Core.Contracts.Messages;
 using Core.Contracts.Pool;
 using Core.Logger;
+using Core.Map;
 using Core.MessagePipe;
 using Core.MessagePipe.Messages;
 using Core.StateMachine;
 using Data;
-using Data.Character;
 using MessagePipe;
 using Presentation.Character;
+using Presentation.Managers;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -33,6 +32,7 @@ namespace Composite
     public class GameLifetimeScope : LifetimeScope
     {
         [SerializeField] private CharacterView characterView;
+        [SerializeField] private MapManager mapManager;
 
         /// <summary>
         /// Configures the dependencies and their lifetimes for the game.
@@ -47,10 +47,20 @@ namespace Composite
             RegisterApplicationAdapters(builder);
 
             RegisterInput(builder);
-
+            
+            RegisterMap(builder);
             RegisterCharacter(builder);
         }
-        
+
+        private void RegisterMap(IContainerBuilder builder)
+        {
+            builder.Register<MapChunk>(Lifetime.Transient).AsSelf();
+            builder.Register<IObjectPool<MapChunk>, ObjectPoolAdapter<MapChunk>>(Lifetime.Singleton);
+
+            builder.RegisterComponent(mapManager).AsImplementedInterfaces();
+            builder.RegisterEntryPoint<Map>().AsSelf();
+        }
+
         /// <summary>
         /// Registers input dependencies
         /// </summary>
@@ -85,9 +95,6 @@ namespace Composite
         /// <param name="builder">The container builder to register dependencies.</param>
         private void RegisterApplicationAdapters(IContainerBuilder builder)
         {
-
-            builder.Register<IPosition, Position>(Lifetime.Transient);
-
             LoggerProvider.Initialize(new Logger());
         }
 
@@ -99,36 +106,25 @@ namespace Composite
         {
             // Register MessagePipe and set up options.
             var options = builder.RegisterMessagePipe();
+            RegisterMessage<CharacterAnimationMessage>(builder, options);
+            RegisterMessage<PositionUpdateMessage>(builder, options);
+            RegisterMessage<SetCharacterStateMessage>(builder, options);
+            RegisterMessage<MapChunkMessage>(builder, options);
 
             // Setup GlobalMessagePipe to enable diagnostics window and global function.
             builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
-
-            // Register MessageBroker for CharacterAnimationMessage messages.
-            builder.RegisterMessageBroker<CharacterAnimationMessage>(options);
-            builder.RegisterMessageBroker<PositionUpdateMessage>(options);
-            builder.RegisterMessageBroker<SetCharacterStateMessage>(options);
-
-            builder.Register<PoolableMessagePublisher<CharacterAnimationMessage>>(Lifetime.Singleton).AsSelf();
-            builder.Register<PoolableMessagePublisher<PositionUpdateMessage>>(Lifetime.Singleton).AsSelf();
-            builder.Register<PoolableMessagePublisher<SetCharacterStateMessage>>(Lifetime.Singleton).AsSelf();
             
-            builder.Register<IMessagePublisher<CharacterAnimationMessage>, MessagePublisher<CharacterAnimationMessage>>(Lifetime.Singleton);
-            builder.Register<IMessagePublisher<PositionUpdateMessage>, MessagePublisher<PositionUpdateMessage>>(Lifetime.Singleton);
-            builder.Register<IMessagePublisher<SetCharacterStateMessage>, MessagePublisher<SetCharacterStateMessage>>(Lifetime.Singleton);
-            
-            builder.Register<IMessageSubscriber<CharacterAnimationMessage>, MessageSubscriber<CharacterAnimationMessage>>(Lifetime.Singleton);
-            builder.Register<IMessageSubscriber<PositionUpdateMessage>, MessageSubscriber<PositionUpdateMessage>>(Lifetime.Singleton);
-            builder.Register<IMessageSubscriber<SetCharacterStateMessage>, MessageSubscriber<SetCharacterStateMessage>>(Lifetime.Singleton);
-
-            builder.Register<IObjectPool<CharacterAnimationMessage>, ObjectPoolAdapter<CharacterAnimationMessage>>(Lifetime.Singleton);
-            builder.Register<IObjectPool<PositionUpdateMessage>, ObjectPoolAdapter<PositionUpdateMessage>>(Lifetime.Singleton);
-            builder.Register<IObjectPool<SetCharacterStateMessage>, ObjectPoolAdapter<SetCharacterStateMessage>>(Lifetime.Singleton);
-
-            builder.Register<IMessageRegistration, MessageRegistration<CharacterAnimationMessage>>(Lifetime.Singleton);
-            builder.Register<IMessageRegistration, MessageRegistration<PositionUpdateMessage>>(Lifetime.Singleton);
-            builder.Register<IMessageRegistration, MessageRegistration<SetCharacterStateMessage>>(Lifetime.Singleton);
-
             builder.Register<IMessageManager, MessageManager>(Lifetime.Singleton);
+        }
+
+        private void RegisterMessage<TMessage>(IContainerBuilder builder, MessagePipeOptions options) where TMessage : class, IMessage, new()
+        {
+            builder.RegisterMessageBroker<TMessage>(options);
+            builder.Register<PoolableMessagePublisher<TMessage>>(Lifetime.Singleton).AsSelf();
+            builder.Register<IMessagePublisher<TMessage>, MessagePublisher<TMessage>>(Lifetime.Singleton);
+            builder.Register<IMessageSubscriber<TMessage>, MessageSubscriber<TMessage>>(Lifetime.Singleton);
+            builder.Register<IObjectPool<TMessage>, ObjectPoolAdapter<TMessage>>(Lifetime.Singleton);
+            builder.Register<IMessageRegistration, MessageRegistration<TMessage>>(Lifetime.Singleton);
         }
 
         /// <summary>

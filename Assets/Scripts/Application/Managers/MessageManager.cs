@@ -48,7 +48,7 @@ namespace Application.Managers
         /// </summary>
         /// <typeparam name="TMessage">The type of message to publish.</typeparam>
         /// <param name="data">The data to be published with the message.</param>
-        public void Publish<TMessage>(object data = null) where TMessage : class, IPoolable
+        public void Publish<TMessage>(object data = null) where TMessage : class, IMessage
         {
             var messageType = typeof(TMessage);
             if (publishers.TryGetValue(messageType, out var publisher))

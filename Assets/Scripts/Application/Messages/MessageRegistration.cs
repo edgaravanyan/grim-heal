@@ -10,7 +10,7 @@ namespace Application.Messages
     /// Represents the registration information for a specific message type using VContainer for dependency injection.
     /// </summary>
     /// <typeparam name="TMessage">The type of message associated with the registration.</typeparam>
-    public class MessageRegistration<TMessage> : IMessageRegistration where TMessage : class, IPoolable
+    public class MessageRegistration<TMessage> : IMessageRegistration where TMessage : class, IMessage
     {
         [Inject] private PoolableMessagePublisher<TMessage> publisher;
         [Inject] private IMessageSubscriber<TMessage> subscriber;
