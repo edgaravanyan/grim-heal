@@ -8,8 +8,12 @@ namespace Core.Map
     /// </summary>
     public class Map
     {
-        private readonly MapChunkGrid mapGrid;
         private readonly MapMessageHandler messageHandler;
+
+        /// <summary>
+        /// Gets the grid of map chunks.
+        /// </summary>
+        public MapChunkGrid MapGrid { get; }
 
         /// <summary>
         /// Initializes a new instance of the Map class.
@@ -22,13 +26,13 @@ namespace Core.Map
             messageHandler = new MapMessageHandler(messageManager);
 
             // Create an instance of MapChunkGrid to manage the grid of map chunks.
-            mapGrid = new MapChunkGrid(chunkPool);
+            MapGrid = new MapChunkGrid(chunkPool);
 
             // Subscribe the MapChunkGrid to the OnMapChunkUpdated event to receive notifications of chunk updates.
-            mapGrid.OnMapChunkUpdated += messageHandler.PublishMapChunkUpdate;
+            MapGrid.OnMapChunkUpdated += messageHandler.PublishMapChunkUpdate;
 
             // Subscribe the MapMessageHandler to position updates to handle changes in the active chunk.
-            messageHandler.SubscribeToPositionUpdates(mapGrid.UpdateActiveChunkIfNeeded);
+            messageHandler.SubscribeToPositionUpdates(MapGrid.UpdateActiveChunkIfNeeded);
         }
     }
 }

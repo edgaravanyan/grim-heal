@@ -19,7 +19,7 @@ namespace Core.Map
         private readonly IObjectPool<MapChunk> chunkPool;
         private readonly List<MapChunk> wrappedCells = new(GridWidth * GridHeight);
 
-        private List<MapChunk> chunkGrid;
+        public List<MapChunk> MapChunks { get; private set; }
         private MapChunk activeChunk;
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Core.Map
 
         private void CreateGrid(int gridWidth, int gridHeight, Vector2 chunkSize)
         {
-            chunkGrid = new List<MapChunk>();
+            MapChunks = new List<MapChunk>();
             for (var row = 0; row < gridWidth; row++)
             {
                 for (var col = 0; col < gridHeight; col++)
@@ -58,7 +58,7 @@ namespace Core.Map
                     mapChunk.Initialize(position, initialIndex);
                     mapChunk.OnPositionChanged += UpdateMap;
 
-                    chunkGrid.Add(mapChunk);
+                    MapChunks.Add(mapChunk);
                 }
             }
             activeChunk = FindCurrentChunk(new Vector2(0, 0));
@@ -82,14 +82,14 @@ namespace Core.Map
         {
             // Shift chunks based on the new active chunk position.
             var direction = FromIndex(activeChunk.IndexInGrid) * -1;
-            GridUtils.ShiftCells(chunkGrid, GridWidth, direction, wrappedCells);
+            GridUtils.ShiftCells(MapChunks, GridWidth, direction, wrappedCells);
             UpdateChunkIndicesAndPositions();
         }
 
         private void UpdateChunkIndicesAndPositions()
         {
             // Update indices and positions after shifting chunks.
-            chunkGrid.ForEach(chunk => chunk.IndexInGrid = chunkGrid.IndexOf(chunk));
+            MapChunks.ForEach(chunk => chunk.IndexInGrid = MapChunks.IndexOf(chunk));
             wrappedCells.ForEach(chunk => chunk.Position = activeChunk.Position + FromIndex(chunk.IndexInGrid) * ChunkSize);
             wrappedCells.Clear();
         }
@@ -103,7 +103,7 @@ namespace Core.Map
         private MapChunk FindCurrentChunk(Vector2 position)
         {
             // Find the map chunk that contains a given position.
-            return chunkGrid.First(chunk => chunk.Contains(position));
+            return MapChunks.First(chunk => chunk.Contains(position));
         }
 
         private static int ToIndex(int x, int y)
