@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using Core.Contracts.Messages;
 using Core.Map;
 using Core.MessagePipe.Messages;
+using Data;
+using Unity.Mathematics;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using Random = UnityEngine.Random;
 
 namespace Presentation.Managers
 {
@@ -13,21 +16,30 @@ namespace Presentation.Managers
     /// </summary>
     public class MapManager : MonoBehaviour, IInitializable
     {
-        /// <summary>
-        /// List of Unity Transforms representing the visual elements of map chunks.
-        /// </summary>
-        public List<Transform> testMapChunkView;
-
         [Inject] private Map map;
         [Inject] private IMessageManager messageManager;
+        [Inject] private PrefabProvider prefabProvider;
+
+        private readonly List<GameObject> mapChunks = new();
 
         /// <summary>
         /// Initializes the MapManager and sets up the initial state.
         /// </summary>
-        void IInitializable.Initialize()
+        async void IInitializable.Initialize()
         {
-            // Set initial positions of map chunk views based on the positions of corresponding MapChunks.
-            map.MapGrid.MapChunks.ForEach(chunk => testMapChunkView[chunk.Id].position = new Vector2(chunk.Position.X, chunk.Position.Y));
+            var chunkPrefabs = await prefabProvider.GetMapChunksAsync();
+            
+            
+            // Create map chunk views based on the count and positions of MapChunks in Map.
+            foreach (var mapChunk in map.MapGrid.MapChunks)
+            {
+                var prefabIndex = Random.Range(0, chunkPrefabs.Count);
+                var position = new Vector2(mapChunk.Position.X, mapChunk.Position.Y);
+                
+                var mapChunkGameObject = Instantiate(chunkPrefabs[prefabIndex], position, quaternion.identity);
+                mapChunks.Add(mapChunkGameObject);
+            }
+                
 
             // Subscribe to MapChunkMessage events to update the visual representation when a map chunk changes.
             messageManager.Subscribe<MapChunkMessage>(message =>
@@ -36,7 +48,7 @@ namespace Presentation.Managers
                 var chunkPosition = mapChunk.Position;
 
                 // Update the position of the corresponding map chunk view.
-                testMapChunkView[mapChunk.Id].position = new Vector2(chunkPosition.X, chunkPosition.Y);
+                mapChunks[mapChunk.Id].transform.position = new Vector2(chunkPosition.X, chunkPosition.Y);
             });
         }
     }

@@ -19,8 +19,12 @@ namespace Core.Map
         private readonly IObjectPool<MapChunk> chunkPool;
         private readonly List<MapChunk> wrappedCells = new(GridWidth * GridHeight);
 
-        public List<MapChunk> MapChunks { get; private set; }
         private MapChunk activeChunk;
+
+        /// <summary>
+        /// Gets the list of map chunks in the grid.
+        /// </summary>
+        public List<MapChunk> MapChunks { get; private set; }
 
         /// <summary>
         /// Gets the size of each map chunk.
@@ -44,6 +48,20 @@ namespace Core.Map
             CreateGrid(GridWidth, GridHeight, ChunkSize);
         }
 
+        /// <summary>
+        /// Handles position updates and updates the active map chunk accordingly.
+        /// </summary>
+        /// <param name="message">The position update message.</param>
+        public void UpdateActiveChunkIfNeeded(PositionUpdateMessage message)
+        {
+            var position = message.Data;
+            if (activeChunk.Contains(position)) return;
+
+            // Update the active chunk based on the new position.
+            activeChunk = FindCurrentChunk(position);
+            ShiftChunksToCurrent();
+        }
+
         private void CreateGrid(int gridWidth, int gridHeight, Vector2 chunkSize)
         {
             MapChunks = new List<MapChunk>();
@@ -64,23 +82,9 @@ namespace Core.Map
             activeChunk = FindCurrentChunk(new Vector2(0, 0));
         }
 
-        /// <summary>
-        /// Handles position updates and updates the active map chunk accordingly.
-        /// </summary>
-        /// <param name="message">The position update message.</param>
-        public void UpdateActiveChunkIfNeeded(PositionUpdateMessage message)
-        {
-            var position = message.Data;
-            if (activeChunk.Contains(position)) return;
-
-            // Update the active chunk based on the new position.
-            activeChunk = FindCurrentChunk(position);
-            ShiftChunksToCurrent();
-        }
-
         private void ShiftChunksToCurrent()
         {
-            // Shift chunks based on the new active chunk position.
+            // Shift chunks to keep active chunk in the middle
             var direction = FromIndex(activeChunk.IndexInGrid) * -1;
             GridUtils.ShiftCells(MapChunks, GridWidth, direction, wrappedCells);
             UpdateChunkIndicesAndPositions();

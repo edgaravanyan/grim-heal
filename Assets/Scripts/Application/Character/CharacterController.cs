@@ -33,7 +33,7 @@ namespace Application.Character
             input.Game.Movement.canceled += CaptureInput;
             
             // Asynchronously initialize character stats.
-            character.CharacterStats = await dataProvider.GetCharacterStatsAsync();
+            character.CharacterData = await dataProvider.GetCharacterDataAsync();
         }
 
         /// <summary>

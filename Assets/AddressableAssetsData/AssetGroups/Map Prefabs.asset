@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Map Prefabs
+  m_EditorClassIdentifier: 
+  m_GroupName: Map Prefabs
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 7353dddabf74f4ed7a95c1f9cb8a682f
+  m_SerializeEntries:
+  - m_GUID: cbca540c4036647c087fe895b1066557
+    m_Address: Assets/Prefabs/Map/TerrainChunk 3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Map
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91680ecbc647d4800834b0ef66e76e80
+    m_Address: Assets/Prefabs/Map/TerrainChunk 4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Map
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b118ec4c10be4e90986a8478ba24351
+    m_Address: Assets/Prefabs/Map/TerrainChunk 5.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Map
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 8b32ba674d0774f7ca26a640e2356536, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8ab5226d5086a40dd9714f76468d682e, type: 2}
+    - {fileID: 11400000, guid: a5eddd5d3a65d4ef59cdd527cfeb4591, type: 2}

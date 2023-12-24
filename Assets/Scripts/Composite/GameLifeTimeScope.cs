@@ -87,6 +87,7 @@ namespace Composite
         private void RegisterDataAdapters(IContainerBuilder builder)
         {
             builder.Register<DataProvider>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<PrefabProvider>(Lifetime.Singleton).AsSelf();
         }
 
         /// <summary>

@@ -12,22 +12,22 @@ namespace Core.Character
     /// </remarks>
     public class Character
     {
-        private ICharacterStats characterStats;
+        private ICharacterData characterData;
 
         /// <summary>
         /// Event triggered when character statistics are updated.
         /// </summary>
-        public event Action<ICharacterStats> OnStatsUpdated;
+        public event Action<ICharacterData> OnStatsUpdated;
 
         /// <summary>
         /// Gets or sets the character statistics, such as move speed and acceleration.
         /// </summary>
-        public ICharacterStats CharacterStats
+        public ICharacterData CharacterData
         {
             set
             {
                 OnStatsUpdated?.Invoke(value);
-                characterStats = value;
+                characterData = value;
             }
         }
 
