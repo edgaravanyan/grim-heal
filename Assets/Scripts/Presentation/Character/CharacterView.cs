@@ -13,9 +13,6 @@ namespace Presentation.Character
         private Animator animator;
         private Rigidbody2D rigidBody;
 
-        /// <summary>
-        /// Initializes the Animator component during Awake.
-        /// </summary>
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -23,7 +20,7 @@ namespace Presentation.Character
         }
 
         /// <summary>
-        /// Plays the specified animation trigger.
+        /// Plays the specified animation by trigger.
         /// </summary>
         /// <param name="trigger">The trigger parameter for the animation.</param>
         public void PlayAnimation(int trigger)

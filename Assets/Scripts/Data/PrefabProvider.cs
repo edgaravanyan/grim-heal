@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Data
 {
     /// <summary>
-    /// Provides asynchronous methods for loading prefabs related to maps.
+    /// Provides asynchronous methods for loading prefabs
     /// </summary>
     public class PrefabProvider
     {
@@ -16,7 +16,6 @@ namespace Data
         /// <returns>An asynchronous task containing the list of GameObjects representing map chunks.</returns>
         public async UniTask<IList<GameObject>> GetMapChunksAsync()
         {
-            // Asynchronously load map prefabs using the DataLoader.
             return await DataLoader.LoadMapPrefabsAsync();
         }
     }

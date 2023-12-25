@@ -41,43 +41,47 @@ namespace Composite
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterMessagePipe(builder);
-            RegisterDataAdapters(builder);
             
-            RegisterViewAdapters(builder);
+            RegisterDataAdapters(builder);
+            RegisterPresentationAdapters(builder);
             RegisterApplicationAdapters(builder);
 
             RegisterInput(builder);
-            
             RegisterMap(builder);
             RegisterCharacter(builder);
         }
 
-        private void RegisterMap(IContainerBuilder builder)
+        /// <summary>
+        /// Registers the MessagePipe and its dependencies.
+        /// </summary>
+        /// <param name="builder">The container builder to register dependencies.</param>
+        private void RegisterMessagePipe(IContainerBuilder builder)
         {
-            builder.Register<MapChunk>(Lifetime.Transient).AsSelf();
-            builder.Register<IObjectPool<MapChunk>, ObjectPoolAdapter<MapChunk>>(Lifetime.Singleton);
+            var options = builder.RegisterMessagePipe();
+            RegisterMessage<CharacterAnimationMessage>(builder, options);
+            RegisterMessage<PositionUpdateMessage>(builder, options);
+            RegisterMessage<SetCharacterStateMessage>(builder, options);
+            RegisterMessage<MapChunkMessage>(builder, options);
 
-            builder.RegisterComponent(mapManager).AsImplementedInterfaces();
-            builder.RegisterEntryPoint<Map>().AsSelf();
+            builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
+            
+            builder.Register<IMessageManager, MessageManager>(Lifetime.Singleton);
         }
 
         /// <summary>
-        /// Registers input dependencies
+        /// Registers components related to handling messages of a specific type.
         /// </summary>
+        /// <typeparam name="TMessage">The type of message to be handled.</typeparam>
         /// <param name="builder">The container builder to register dependencies.</param>
-        private void RegisterInput(IContainerBuilder builder)
+        /// <param name="options">The MessagePipe options for registration.</param>
+        private void RegisterMessage<TMessage>(IContainerBuilder builder, MessagePipeOptions options) where TMessage : class, IMessage, new()
         {
-            builder.Register<InputActions>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-        }
-
-        /// <summary>
-        /// Registers adapters for core contracts in the view layer.
-        /// </summary>
-        /// <param name="builder">The container builder to register dependencies.</param>
-        private void RegisterViewAdapters(IContainerBuilder builder)
-        {
-            // Register the CharacterView component.
-            builder.RegisterComponent(characterView).As<ICharacterView>();
+            builder.RegisterMessageBroker<TMessage>(options);
+            builder.Register<PoolableMessagePublisher<TMessage>>(Lifetime.Singleton).AsSelf();
+            builder.Register<IMessagePublisher<TMessage>, MessagePublisher<TMessage>>(Lifetime.Singleton);
+            builder.Register<IMessageSubscriber<TMessage>, MessageSubscriber<TMessage>>(Lifetime.Singleton);
+            builder.Register<IObjectPool<TMessage>, ObjectPoolAdapter<TMessage>>(Lifetime.Singleton);
+            builder.Register<IMessageRegistration, MessageRegistration<TMessage>>(Lifetime.Singleton);
         }
 
         /// <summary>
@@ -90,6 +94,17 @@ namespace Composite
             builder.Register<PrefabProvider>(Lifetime.Singleton).AsSelf();
         }
 
+        // (Documentation for RegisterViewAdapters method)
+        /// <summary>
+        /// Registers adapters for core contracts in the presentation layer.
+        /// </summary>
+        /// <param name="builder">The container builder to register dependencies.</param>
+        private void RegisterPresentationAdapters(IContainerBuilder builder)
+        {
+            builder.RegisterComponent(characterView).As<ICharacterView>();
+        }
+
+        // (Documentation for RegisterApplicationAdapters method)
         /// <summary>
         /// Registers adapters for core contracts in the application layer.
         /// </summary>
@@ -99,35 +114,31 @@ namespace Composite
             LoggerProvider.Initialize(new Logger());
         }
 
+        // (Documentation for RegisterInput method)
         /// <summary>
-        /// Registers the MessagePipe and its dependencies.
+        /// Registers input dependencies.
         /// </summary>
         /// <param name="builder">The container builder to register dependencies.</param>
-        private void RegisterMessagePipe(IContainerBuilder builder)
+        private void RegisterInput(IContainerBuilder builder)
         {
-            // Register MessagePipe and set up options.
-            var options = builder.RegisterMessagePipe();
-            RegisterMessage<CharacterAnimationMessage>(builder, options);
-            RegisterMessage<PositionUpdateMessage>(builder, options);
-            RegisterMessage<SetCharacterStateMessage>(builder, options);
-            RegisterMessage<MapChunkMessage>(builder, options);
-
-            // Setup GlobalMessagePipe to enable diagnostics window and global function.
-            builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
-            
-            builder.Register<IMessageManager, MessageManager>(Lifetime.Singleton);
+            builder.Register<InputActions>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }
 
-        private void RegisterMessage<TMessage>(IContainerBuilder builder, MessagePipeOptions options) where TMessage : class, IMessage, new()
+        // (Documentation for RegisterMap method)
+        /// <summary>
+        /// Registers map-related dependencies.
+        /// </summary>
+        /// <param name="builder">The container builder to register dependencies.</param>
+        private void RegisterMap(IContainerBuilder builder)
         {
-            builder.RegisterMessageBroker<TMessage>(options);
-            builder.Register<PoolableMessagePublisher<TMessage>>(Lifetime.Singleton).AsSelf();
-            builder.Register<IMessagePublisher<TMessage>, MessagePublisher<TMessage>>(Lifetime.Singleton);
-            builder.Register<IMessageSubscriber<TMessage>, MessageSubscriber<TMessage>>(Lifetime.Singleton);
-            builder.Register<IObjectPool<TMessage>, ObjectPoolAdapter<TMessage>>(Lifetime.Singleton);
-            builder.Register<IMessageRegistration, MessageRegistration<TMessage>>(Lifetime.Singleton);
+            builder.Register<MapChunk>(Lifetime.Transient).AsSelf();
+            builder.Register<IObjectPool<MapChunk>, ObjectPoolAdapter<MapChunk>>(Lifetime.Singleton);
+
+            builder.RegisterComponent(mapManager).AsImplementedInterfaces();
+            builder.RegisterEntryPoint<Map>().AsSelf();
         }
 
+        // (Documentation for RegisterCharacter method)
         /// <summary>
         /// Registers character-related dependencies.
         /// </summary>
@@ -141,16 +152,9 @@ namespace Composite
             builder.Register<CharacterState, WalkState>(Lifetime.Scoped);
             builder.Register<CharacterState, DieState>(Lifetime.Scoped);
 
-            // Register the CharacterMovementController component.
             builder.Register<CharacterMovementController>(Lifetime.Scoped).AsImplementedInterfaces();
-
-            // Register CharacterAnimationController component.
             builder.Register<CharacterAnimationController>(Lifetime.Scoped).AsImplementedInterfaces();
-
-            // Register CharacterStateRunner as a StateRunner<CharacterState>.
             builder.Register<CharacterStateRunner>(Lifetime.Singleton).As<StateRunner<CharacterState>>();
-
-            // Register CharacterController as a self-contained entry point.
             builder.RegisterEntryPoint<CharacterController>(Lifetime.Scoped).AsSelf();
         }
     }

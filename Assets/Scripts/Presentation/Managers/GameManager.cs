@@ -11,18 +11,12 @@ namespace Presentation.Managers
     {
         [Inject] private CharacterController characterController;
 
-        /// <summary>
-        /// Called once per frame to update the game logic. Delegates logic updates to the character controller.
-        /// </summary>
         private void Update()
         {
             // Update the character controller's logical aspects.
             characterController.Update();
         }
 
-        /// <summary>
-        /// Called at a fixed time step for physics-related updates. Delegates physics updates to the character controller.
-        /// </summary>
         private void FixedUpdate()
         {
             // Update the character controller's physics-related aspects.

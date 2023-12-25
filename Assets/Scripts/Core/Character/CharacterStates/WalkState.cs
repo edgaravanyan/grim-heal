@@ -4,7 +4,7 @@ using Core.MessagePipe.Messages;
 namespace Core.Character.CharacterStates
 {
     /// <summary>
-    /// Represents the walking state of a game character. Inherits from CharacterState.
+    /// Represents the walking state of a game character. Inherits from abstract CharacterState.
     /// </summary>
     public class WalkState : CharacterState
     {
@@ -19,7 +19,7 @@ namespace Core.Character.CharacterStates
         }
         
         /// <summary>
-        /// Updates the logical aspects of the walking state, including calculating character speed.
+        /// Updates the logical aspects of the walking state.
         /// </summary>
         /// <param name="deltaTime">The time elapsed since the last frame.</param>
         public override void UpdateLogic(float deltaTime)
@@ -30,7 +30,7 @@ namespace Core.Character.CharacterStates
         }
 
         /// <summary>
-        /// Checks for a change to the IdleState based on movement input.
+        /// Checks to change to the IdleState based on the movement speed.
         /// </summary>
         public override void CheckToChange()
         {

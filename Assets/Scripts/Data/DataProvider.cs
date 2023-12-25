@@ -9,7 +9,7 @@ using VContainer.Unity;
 namespace Data
 {
     /// <summary>
-    /// Class responsible for providing data and initializing character-related information.
+    /// Class responsible for providing data in scriptable objects.
     /// </summary>
     public class DataProvider : IInitializable
     {
@@ -21,7 +21,7 @@ namespace Data
         }
 
         /// <summary>
-        /// Asynchronously retrieves character stats from the loaded data.
+        /// Asynchronously retrieves character data from the loaded data.
         /// </summary>
         /// <returns>The character stats.</returns>
         public async UniTask<CharacterData> GetCharacterDataAsync()

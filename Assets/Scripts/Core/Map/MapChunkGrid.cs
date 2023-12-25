@@ -49,7 +49,7 @@ namespace Core.Map
         }
 
         /// <summary>
-        /// Handles position updates and updates the active map chunk accordingly.
+        /// Check to update the active map chunk by character position.
         /// </summary>
         /// <param name="message">The position update message.</param>
         public void UpdateActiveChunkIfNeeded(PositionUpdateMessage message)
@@ -57,7 +57,6 @@ namespace Core.Map
             var position = message.Data;
             if (activeChunk.Contains(position)) return;
 
-            // Update the active chunk based on the new position.
             activeChunk = FindCurrentChunk(position);
             ShiftChunksToCurrent();
         }
@@ -84,7 +83,7 @@ namespace Core.Map
 
         private void ShiftChunksToCurrent()
         {
-            // Shift chunks to keep active chunk in the middle
+            // Shift chunks to keep active chunk in the middle by surrounding it
             var direction = FromIndex(activeChunk.IndexInGrid) * -1;
             GridUtils.ShiftCells(MapChunks, GridWidth, direction, wrappedCells);
             UpdateChunkIndicesAndPositions();
@@ -100,13 +99,11 @@ namespace Core.Map
 
         private void UpdateMap(MapChunk chunk)
         {
-            // Invoke the OnMapChunkUpdated event to notify subscribers of map chunk updates.
             OnMapChunkUpdated?.Invoke(chunk);
         }
 
         private MapChunk FindCurrentChunk(Vector2 position)
         {
-            // Find the map chunk that contains a given position.
             return MapChunks.First(chunk => chunk.Contains(position));
         }
 
