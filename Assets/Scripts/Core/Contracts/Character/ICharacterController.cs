@@ -8,11 +8,11 @@ namespace Core.Contracts.Character
         /// <summary>
         /// Handles the character state update during each frame.
         /// </summary>
-        void Update();
+        void Tick();
         
         /// <summary>
         /// Handles the character update during fixed time steps for physics.
         /// </summary>
-        void UpdatePhysics();
+        void FixedTick();
     }
 }

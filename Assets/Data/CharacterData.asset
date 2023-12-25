@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CharacterData
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  acceleration: 0.75
-  deAcceleration: 1.5
+  acceleration: 1.5
+  deAcceleration: 3

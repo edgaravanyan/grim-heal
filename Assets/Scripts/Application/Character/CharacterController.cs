@@ -6,6 +6,7 @@ using Core.Contracts.Messages;
 using Core.MessagePipe.Messages;
 using Core.StateMachine;
 using Data;
+using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -16,24 +17,23 @@ namespace Application.Character
     /// <summary>
     /// Controls and updates the character.
     /// </summary>
-    public class CharacterController : ICharacterController, IStartable, IInitializable, IDisposable
+    public class CharacterController : ICharacterController, IInitializable, IStartable, ITickable, IFixedTickable, IDisposable
     {
         [Inject] private Core.Character.Character character;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
         [Inject] private DataProvider dataProvider;
         [Inject] private IMessageManager messageManager;
-        [Inject] private InputActions input;
+        [Inject] private InputActions inputActions;
+        
+        private IDisposable clickStream;
 
         /// <summary>
         /// Initializes the CharacterController by asynchronously retrieving character stats and performing additional setup.
         /// </summary>
-        async void IInitializable.Initialize()
+        void IInitializable.Initialize()
         {
-            input.Game.Movement.performed += CaptureInput;
-            input.Game.Movement.canceled += CaptureInput;
-            
-            // Asynchronously initialize character stats.
-            character.CharacterData = await dataProvider.GetCharacterDataAsync();
+            SetCharacterDataAsync();
+            RegisterCharacterInput();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Application.Character
         /// <summary>
         /// Handles the character update during each frame.
         /// </summary>
-        public void Update()
+        public void Tick()
         {
             // Update logical aspects of the current state.
             characterStateRunner.UpdateCurrentState(Time.deltaTime);
@@ -58,10 +58,29 @@ namespace Application.Character
         /// <summary>
         /// Handles the character update during fixed time steps for physics.
         /// </summary>
-        public void UpdatePhysics()
+        public void FixedTick()
         {
             // Update physics-related aspects of the current state.
             characterStateRunner.FixedUpdate(Time.fixedDeltaTime);
+        }
+
+        private async void SetCharacterDataAsync()
+        {
+            character.CharacterData = await dataProvider.GetCharacterDataAsync();
+        }
+
+        private void RegisterCharacterInput()
+        {
+            var gameMovement = inputActions.Game.Movement;
+            var performedObservable = Observable.FromEvent<InputAction.CallbackContext>(
+                h => gameMovement.performed += h,
+                h => gameMovement.performed -= h
+            );
+            var canceledObservable = Observable.FromEvent<InputAction.CallbackContext>(
+                h => gameMovement.canceled += h,
+                h => gameMovement.canceled -= h
+            );
+            clickStream = performedObservable.Merge(canceledObservable).Subscribe(CaptureInput);
         }
 
         /// <summary>
@@ -77,20 +96,19 @@ namespace Application.Character
         }
 
         /// <summary>
-        /// Unsubscribes from movement input events when the character controller is disposed.
-        /// </summary>
-        void IDisposable.Dispose()
-        {
-            input.Game.Movement.performed -= CaptureInput;
-            input.Game.Movement.canceled -= CaptureInput;
-        }
-
-        /// <summary>
         /// Sets the character state based on the received message.
         /// </summary>
         private void SetCharacterState(SetCharacterStateMessage message)
         {
             characterStateRunner.SetState(message.Data);
+        }
+
+        /// <summary>
+        /// Unsubscribes from movement input events when the character controller is disposed.
+        /// </summary>
+        void IDisposable.Dispose()
+        {
+            clickStream.Dispose();
         }
     }
 }
