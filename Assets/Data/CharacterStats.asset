@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   acceleration: 5
-  deAcceleration: 10
+  deAcceleration: 0.1

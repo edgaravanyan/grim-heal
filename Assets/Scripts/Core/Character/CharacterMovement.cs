@@ -13,7 +13,9 @@ namespace Core.Character
         private float acceleration;
         private float deAcceleration;
         private float moveSpeed;
-        private float currentSpeed;
+        private Vector2 moveDirection;
+        
+        public float CurrentSpeed { get; private set; }
 
         public CharacterMovement(Character character)
         {
@@ -29,33 +31,33 @@ namespace Core.Character
         /// <summary>
         /// Moves the character based on the current movement parameters.
         /// </summary>
-        /// <param name="fixedDeltaTime">The fixed time step for physics calculations.</param>
-        /// <param name="moveDirection">The direction of movement (input).</param>
-        public void Move(float fixedDeltaTime, Vector2 moveDirection)
-        {
-            // Update the character's position based on the current speed and movement direction.
-            character.Position += currentSpeed * fixedDeltaTime * moveDirection;
-        }
-
-        /// <summary>
-        /// Calculates the speed of the character based on the current input and acceleration.
-        /// </summary>
         /// <param name="deltaTime">The time elapsed since the last frame.</param>
         /// <param name="moveDirection">The direction of movement (input).</param>
-        public void CalculateSpeed(float deltaTime, Vector2 moveDirection)
+        public void Move(float deltaTime, Vector2 moveDirection)
         {
-            // Adjust the character's speed based on acceleration and deceleration.
-            if (moveDirection.LengthSquared() > 0 && currentSpeed >= 0)
+            CalculateSpeed(deltaTime, moveDirection);
+            MoveBySpeed(deltaTime);
+        }
+        
+        private void CalculateSpeed(float deltaTime, Vector2 direction)
+        {
+            if (direction.LengthSquared() > 0 && CurrentSpeed >= 0)
             {
-                currentSpeed += acceleration * moveSpeed * deltaTime;
+                moveDirection = direction;
+                CurrentSpeed += acceleration * moveSpeed * deltaTime;
             }
             else
             {
-                currentSpeed -= deAcceleration * moveSpeed * deltaTime;
+                CurrentSpeed -= deAcceleration * moveSpeed * deltaTime;
             }
+            CurrentSpeed = Math.Clamp(CurrentSpeed, 0, moveSpeed);
+        }
 
-            // Clamp the speed to ensure it stays within the specified range.
-            currentSpeed = Math.Clamp(currentSpeed, 0, moveSpeed);
+        private void MoveBySpeed(float deltaTime)
+        {
+            var currentPosition = character.Position;
+            var destination = currentPosition + CurrentSpeed * deltaTime * moveDirection;
+            character.Position = destination;
         }
     }
 }

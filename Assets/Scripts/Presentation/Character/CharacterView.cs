@@ -7,9 +7,11 @@ namespace Presentation.Character
     /// Represents the visual view of a character in the game.
     /// </summary>
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Rigidbody2D))]
     public class CharacterView : MonoBehaviour, ICharacterView
     {
         private Animator animator;
+        private Rigidbody2D rigidBody;
 
         /// <summary>
         /// Initializes the Animator component during Awake.
@@ -17,6 +19,7 @@ namespace Presentation.Character
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            rigidBody = GetComponent<Rigidbody2D>();
         }
 
         /// <summary>
@@ -35,7 +38,6 @@ namespace Presentation.Character
         /// <param name="position">The new position for the character.</param>
         public void SetPosition(System.Numerics.Vector2 position)
         {
-            // Set the GameObject's position based on the provided coordinates.
             transform.position = new Vector2(position.X, position.Y);
         }
     }

@@ -25,17 +25,7 @@ namespace Core.Character.CharacterStates
         public override void UpdateLogic(float deltaTime)
         {
             base.UpdateLogic(deltaTime);
-            characterMovement.CalculateSpeed(deltaTime, Input);
-        }
-
-        /// <summary>
-        /// Updates the physics for the walking state, including moving the character.
-        /// </summary>
-        /// <param name="fixedDeltaTime">The fixed time step for physics calculations.</param>
-        public override void UpdatePhysics(float fixedDeltaTime)
-        {
-            base.UpdatePhysics(fixedDeltaTime);
-            characterMovement.Move(fixedDeltaTime, Input);
+            characterMovement.Move(deltaTime, Input);
             messageManager.Publish<PositionUpdateMessage>(character.Position);
         }
 
@@ -45,9 +35,7 @@ namespace Core.Character.CharacterStates
         public override void CheckToChange()
         {
             base.CheckToChange();
-
-            // Check if there is no movement input, and transition to the IdleState if true.
-            if (Input.LengthSquared() == 0)
+            if (characterMovement.CurrentSpeed == 0)
             {
                 messageManager.Publish<SetCharacterStateMessage>(typeof(IdleState));
             }
