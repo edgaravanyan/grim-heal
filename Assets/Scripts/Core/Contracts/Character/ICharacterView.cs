@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Core.Contracts
+namespace Core.Contracts.Character
 {
     /// <summary>
     /// Interface for character view.

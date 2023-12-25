@@ -1,4 +1,4 @@
-namespace Core.Contracts
+namespace Core.Contracts.Character
 {
     /// <summary>
     /// Controls and updates the character.

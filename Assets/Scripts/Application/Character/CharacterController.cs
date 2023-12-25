@@ -1,7 +1,7 @@
 using System;
 using Application.Input;
 using Core.Character.CharacterStates;
-using Core.Contracts;
+using Core.Contracts.Character;
 using Core.Contracts.Messages;
 using Core.MessagePipe.Messages;
 using Core.StateMachine;
@@ -18,9 +18,9 @@ namespace Application.Character
     /// </summary>
     public class CharacterController : ICharacterController, IStartable, IInitializable, IDisposable
     {
-        [Inject] private DataProvider dataProvider;
         [Inject] private Core.Character.Character character;
         [Inject] private StateRunner<CharacterState> characterStateRunner;
+        [Inject] private DataProvider dataProvider;
         [Inject] private IMessageManager messageManager;
         [Inject] private InputActions input;
 

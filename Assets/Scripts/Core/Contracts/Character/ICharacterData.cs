@@ -1,4 +1,4 @@
-namespace Core.Contracts
+namespace Core.Contracts.Character
 {
     /// <summary>
     /// Represents the data of a character.

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Core.Contracts.Map;
 using Core.Contracts.Messages;
 using Core.Contracts.Pool;
 
@@ -6,14 +8,15 @@ namespace Core.Map
     /// <summary>
     /// Represents a 2D map divided into chunks.
     /// </summary>
-    public class Map
+    public class Map : IMap
     {
         private readonly MapMessageHandler messageHandler;
+        private readonly MapChunkGrid mapGrid;
 
         /// <summary>
-        /// Gets the grid of map chunks.
+        /// Gets the list of map chunks.
         /// </summary>
-        public MapChunkGrid MapGrid { get; }
+        public List<MapChunk> Chunks => mapGrid.MapChunks;
 
         /// <summary>
         /// Initializes a new instance of the Map class.
@@ -26,13 +29,13 @@ namespace Core.Map
             messageHandler = new MapMessageHandler(messageManager);
 
             // Create an instance of MapChunkGrid to manage the grid of map chunks.
-            MapGrid = new MapChunkGrid(chunkPool);
+            mapGrid = new MapChunkGrid(chunkPool);
 
             // Subscribe the MapChunkGrid to the OnMapChunkUpdated event to receive notifications of chunk updates.
-            MapGrid.OnMapChunkUpdated += messageHandler.PublishMapChunkUpdate;
+            mapGrid.OnMapChunkUpdated += messageHandler.PublishMapChunkUpdate;
 
             // Subscribe the MapMessageHandler to position updates to handle changes in the active chunk.
-            messageHandler.SubscribeToPositionUpdates(MapGrid.UpdateActiveChunkIfNeeded);
+            messageHandler.SubscribeToPositionUpdates(mapGrid.UpdateActiveChunkIfNeeded);
         }
     }
 }

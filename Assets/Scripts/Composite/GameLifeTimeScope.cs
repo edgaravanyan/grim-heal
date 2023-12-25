@@ -1,11 +1,14 @@
 using Application.Character;
 using Application.Input;
 using Application.Managers;
+using Application.Map;
 using Application.Messages;
 using Application.Utils;
 using Core.Character;
 using Core.Character.CharacterStates;
 using Core.Contracts;
+using Core.Contracts.Character;
+using Core.Contracts.Map;
 using Core.Contracts.Messages;
 using Core.Contracts.Pool;
 using Core.Logger;
@@ -32,7 +35,7 @@ namespace Composite
     public class GameLifetimeScope : LifetimeScope
     {
         [SerializeField] private CharacterView characterView;
-        [SerializeField] private MapManager mapManager;
+        [SerializeField] private MapViewProvider mapViewProvider;
 
         /// <summary>
         /// Configures the dependencies and their lifetimes for the game.
@@ -102,6 +105,7 @@ namespace Composite
         private void RegisterPresentationAdapters(IContainerBuilder builder)
         {
             builder.RegisterComponent(characterView).As<ICharacterView>();
+            builder.RegisterComponent(mapViewProvider).As<IViewProvider<IMapView>>();
         }
 
         // (Documentation for RegisterApplicationAdapters method)
@@ -133,9 +137,11 @@ namespace Composite
         {
             builder.Register<MapChunk>(Lifetime.Transient).AsSelf();
             builder.Register<IObjectPool<MapChunk>, ObjectPoolAdapter<MapChunk>>(Lifetime.Singleton);
-
-            builder.RegisterComponent(mapManager).AsImplementedInterfaces();
-            builder.RegisterEntryPoint<Map>().AsSelf();
+            
+            builder.Register<IMap, Map>(Lifetime.Scoped).AsSelf();
+            builder.Register<IMapView, MapView>(Lifetime.Scoped).AsSelf();
+            
+            builder.Register<IMapController, MapController>(Lifetime.Scoped).AsImplementedInterfaces();
         }
 
         // (Documentation for RegisterCharacter method)

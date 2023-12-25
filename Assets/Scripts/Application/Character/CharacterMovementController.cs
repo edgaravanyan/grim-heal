@@ -1,4 +1,5 @@
 using Core.Contracts;
+using Core.Contracts.Character;
 using Core.Contracts.Messages;
 using Core.MessagePipe.Messages;
 using VContainer;

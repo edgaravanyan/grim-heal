@@ -1,4 +1,5 @@
 using Core.Contracts;
+using Core.Contracts.Character;
 
 namespace Data.Character
 {
