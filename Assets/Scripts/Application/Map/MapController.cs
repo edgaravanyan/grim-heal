@@ -20,7 +20,7 @@ namespace Application.Map
         /// <summary>
         /// Creates initial map chunk views and subscribes to update positions from map.
         /// </summary>
-        void IInitializable.Initialize()
+        async void IInitializable.Initialize()
         {
             // List to store map view instances.
             var mapViews = new List<IMapView>();
@@ -28,7 +28,7 @@ namespace Application.Map
             // Create map view instances based on the count and positions of MapChunks in Map.
             foreach (var mapChunk in map.Chunks)
             {
-                var mapView = mapViewProvider.CreateViewAsync().Result; // Synchronously waiting, consider async all the way.
+                var mapView = await mapViewProvider.CreateViewAsync();
                 mapView.SetPosition(mapChunk.Position); 
                 mapViews.Add(mapView);
             }
