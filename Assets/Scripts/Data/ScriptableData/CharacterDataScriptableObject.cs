@@ -1,18 +1,13 @@
 using UnityEngine;
 
-namespace Data.Character
+namespace Data.ScriptableData
 {
     /// <summary>
     /// ScriptableObject representing character data.
     /// </summary>
     [CreateAssetMenu(menuName = "Data/CharacterData")]
-    public class CharacterDataScriptableObject : ScriptableObject
+    public class CharacterDataScriptableObject : EntityDataScriptableObject
     {
-        /// <summary>
-        /// Move speed of the character.
-        /// </summary>
-        public float moveSpeed;
-
         /// <summary>
         /// Acceleration of the character.
         /// </summary>

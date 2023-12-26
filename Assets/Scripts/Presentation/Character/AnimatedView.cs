@@ -1,15 +1,14 @@
-using Core.Contracts;
 using Core.Contracts.Character;
 using UnityEngine;
 
 namespace Presentation.Character
 {
     /// <summary>
-    /// Represents the visual view of a character in the game.
+    /// Represents the visual view of an entity in the game.
     /// </summary>
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(Rigidbody2D))]
-    public class CharacterView : MonoBehaviour, ICharacterView
+    public class AnimatedView : MonoBehaviour, IAnimatedView
     {
         private Animator animator;
         private Rigidbody2D rigidBody;
@@ -31,9 +30,9 @@ namespace Presentation.Character
         }
 
         /// <summary>
-        /// Sets the position of the character view in the game world.
+        /// Sets the position of the entity view in the game world.
         /// </summary>
-        /// <param name="position">The new position for the character.</param>
+        /// <param name="position">The new position for the entity.</param>
         public void SetPosition(System.Numerics.Vector2 position)
         {
             transform.position = new Vector2(position.X, position.Y);

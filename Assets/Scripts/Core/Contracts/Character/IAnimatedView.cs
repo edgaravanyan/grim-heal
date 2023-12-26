@@ -5,7 +5,7 @@ namespace Core.Contracts.Character
     /// <summary>
     /// Interface for character view.
     /// </summary>
-    public interface ICharacterView
+    public interface IAnimatedView
     {
         /// <summary>
         /// Plays the animation based on the provided trigger.

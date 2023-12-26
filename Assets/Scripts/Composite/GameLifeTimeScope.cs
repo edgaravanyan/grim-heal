@@ -19,7 +19,9 @@ using Core.StateMachine;
 using Data;
 using MessagePipe;
 using Presentation.Character;
+using Presentation.Map;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 using CharacterController = Application.Character.CharacterController;
@@ -33,8 +35,8 @@ namespace Composite
     /// </summary>
     public class GameLifetimeScope : LifetimeScope
     {
-        [SerializeField] private CharacterView characterView;
-        [SerializeField] private MapViewProvider mapViewProvider;
+        [SerializeField] private AnimatedView animatedView;
+        [FormerlySerializedAs("mapViewProvider")] [SerializeField] private MapChunkViewProvider mapChunkViewProvider;
 
         /// <summary>
         /// Configures the dependencies and their lifetimes for the game.
@@ -103,8 +105,8 @@ namespace Composite
         /// <param name="builder">The container builder to register dependencies.</param>
         private void RegisterPresentationAdapters(IContainerBuilder builder)
         {
-            builder.RegisterComponent(characterView).As<ICharacterView>();
-            builder.RegisterComponent(mapViewProvider).As<IViewProvider<IMapView>>();
+            builder.RegisterComponent(animatedView).As<IAnimatedView>();
+            builder.RegisterComponent(mapChunkViewProvider).As<IViewProvider<IMapView>>();
         }
 
         // (Documentation for RegisterApplicationAdapters method)
@@ -138,7 +140,7 @@ namespace Composite
             builder.Register<IObjectPool<MapChunk>, ObjectPoolAdapter<MapChunk>>(Lifetime.Singleton);
             
             builder.Register<IMap, Map>(Lifetime.Scoped).AsSelf();
-            builder.Register<IMapView, MapView>(Lifetime.Scoped).AsSelf();
+            builder.Register<IMapView, MapChunkView>(Lifetime.Scoped).AsSelf();
             
             builder.Register<IMapController, MapController>(Lifetime.Scoped).AsImplementedInterfaces();
         }

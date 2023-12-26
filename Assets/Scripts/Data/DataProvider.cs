@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using Data.Character;
 using Data.Loaders;
+using Data.ScriptableData;
 using UnityEngine;
 using VContainer.Unity;
 

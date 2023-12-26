@@ -613,7 +613,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  characterView: {fileID: 2104505042}
+  animatedView: {fileID: 2104505042}
   mapViewProvider: {fileID: 1284845290}
 --- !u!4 &1155530902
 Transform:

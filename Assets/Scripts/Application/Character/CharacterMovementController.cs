@@ -12,7 +12,7 @@ namespace Application.Character
     /// </summary>
     public class CharacterMovementController : IInitializable
     {
-        [Inject] private ICharacterView characterView;
+        [Inject] private IAnimatedView animatedView;
         [Inject] private IMessageManager messageManager;
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Application.Character
         /// </summary>
         void IInitializable.Initialize()
         {
-            messageManager.Subscribe<PositionUpdateMessage>(message => characterView.SetPosition(message.Data));
+            messageManager.Subscribe<PositionUpdateMessage>(message => animatedView.SetPosition(message.Data));
         }
     }
 }

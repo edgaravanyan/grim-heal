@@ -3,13 +3,8 @@ namespace Core.Contracts.Character
     /// <summary>
     /// Represents the data of a character.
     /// </summary>
-    public interface ICharacterData
+    public interface ICharacterData : IEntityData
     {
-        /// <summary>
-        /// Gets the move speed of the character.
-        /// </summary>
-        float MoveSpeed { get; }
-
         /// <summary>
         /// Gets the acceleration of the character.
         /// </summary>

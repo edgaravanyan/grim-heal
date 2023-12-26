@@ -20,7 +20,7 @@ namespace Application.Character
         private static readonly int WalkTriggerHash = Animator.StringToHash("Walk");
         private static readonly int DieTriggerHash = Animator.StringToHash("Die");
 
-        [Inject] private ICharacterView characterView;
+        [Inject] private IAnimatedView animatedView;
         [Inject] private IMessageManager messageManager;
 
         private readonly Dictionary<Type, Action> messageHandlers = new ();
@@ -39,7 +39,7 @@ namespace Application.Character
         /// </summary>
         public void PlayIdleAnimation()
         {
-            characterView.PlayAnimation(IdleTriggerHash);
+            animatedView.PlayAnimation(IdleTriggerHash);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Application.Character
         /// </summary>
         public void PlayWalkAnimation()
         {
-            characterView.PlayAnimation(WalkTriggerHash);
+            animatedView.PlayAnimation(WalkTriggerHash);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Application.Character
         /// </summary>
         public void PlayDieAnimation()
         {
-            characterView.PlayAnimation(DieTriggerHash);
+            animatedView.PlayAnimation(DieTriggerHash);
         }
 
         private void RegisterSubscribers()
